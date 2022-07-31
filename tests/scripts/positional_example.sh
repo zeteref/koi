@@ -11,8 +11,8 @@ To add arguments:
   1. add arguments to each function with koi::addarg
   2. parse the arguments with koi::parseargs "$@"
 
-To run the script, use the koi::koirun function at the very end of the script:
-  koi::koirun "$@"
+To run the script, use the koi::run function at the very end of the script:
+  koi::run "$@"
 COMMENT
 
 source ../../koi
@@ -38,4 +38,4 @@ function checkstockprice {
 	# check the stock price
 }
 
-koi::koirun "$@"
+koi::run "$@"

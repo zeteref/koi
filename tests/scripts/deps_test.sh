@@ -22,4 +22,4 @@ function testfunc {
 	echo "glad: $glad"
 }
 
-koi::koirun "$@"
+koi::run "$@"

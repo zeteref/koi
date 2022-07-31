@@ -15,4 +15,4 @@ function run {
 	done
 }
 
-koi::koirun "$@"
+koi::run "$@"

@@ -17,4 +17,4 @@ function __koimain {
 	echo "myflag: $myflag"
 }
 
-koi::koirun "$@"
+koi::run "$@"

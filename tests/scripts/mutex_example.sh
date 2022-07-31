@@ -54,4 +54,4 @@ function array {
   echo "flag: $flag"
 }
 
-koi::koirun "$@"
+koi::run "$@"
