@@ -59,20 +59,20 @@ function help {
 
     # build help menu
     local __helpoutput
-    __helpoutput=$(cat <<- EndOfHelp
-    ${koicolorsecondary}${koidescription}${__reset}
+	__helpoutput=$(cat <<- EndOfHelp
+	${koicolorsecondary}${koidescription}${__reset}
 
-    ${koicolorprimary}Usage:${__reset}
-      $koiname COMMAND [args]
+	${koicolorprimary}Usage:${__reset}
+	  $koiname COMMAND [args]
 
-    ${koicolorprimary}Available commands:${__reset}
-    $( \
-        local __cmd ; \
-        for __cmd in $(koi::listfunctions) ; do \
-            echo "  $__cmd" ; \
-        done \
-    )
-    EndOfHelp
+	${koicolorprimary}Available commands:${__reset}
+	$( \
+		local __cmd ; \
+		for __cmd in $(koi::listfunctions) ; do \
+			echo "  $__cmd" ; \
+		done \
+	)
+	EndOfHelp
     )
     echo -e "$__helpoutput"
     echo
@@ -84,12 +84,12 @@ function help {
         koi::commanddocs
     else
         if [[ "$koishowhints" -eq 1 ]] ; then
-            __helpoutput=$(cat <<- EndOfHelp
-            ${koicolorprimary}Hints:${__reset}
-              $koiname help --verbose    Show complete command documentation
-              $koiname COMMAND --help    Show individual command documentation
+			__helpoutput=$(cat <<- EndOfHelp
+			${koicolorprimary}Hints:${__reset}
+			  $koiname help --verbose	Show complete command documentation
+			  $koiname COMMAND --help	Show individual command documentation
 
-            EndOfHelp
+			EndOfHelp
             )
             echo -e "$__helpoutput"
             echo
@@ -179,16 +179,16 @@ function koi::listfunctions {
 }
 
 function koi::addarg {
-    : <<- COMMENT
-    Add an argument to parse for a function
-        $1 - short option (required, can be blank)
-        $2 - long option (required)
-        $3 - action to take with argument (required)
-        $4 - whether or not argument is required (required)
-        $5 - the default value for the argument (required, can be blank)
-        $6 - the help text to print when -h is specified (required)
-        $7 - the function used to verify the argument (optional)
-    COMMENT
+	: <<- COMMENT
+	Add an argument to parse for a function
+		$1 - short option (required, can be blank)
+		$2 - long option (required)
+		$3 - action to take with argument (required)
+		$4 - whether or not argument is required (required)
+		$5 - the default value for the argument (required, can be blank)
+		$6 - the help text to print when -h is specified (required)
+		$7 - the function used to verify the argument (optional)
+	COMMENT
 
     if [[ $# -ne 6 && $# -ne 7 ]] ; then koi::errortext -c "$koiname: koi::addarg err: incorrect usage, either 6 or 7 arguments are required" ; return 1 ; fi
 
@@ -359,16 +359,16 @@ function koi::addarg {
 }
 
 function koi::arg {
-    : <<- COMMENT
-    Add an argument to parse for a function
-        $1 - short option (required, can be blank)
-        $2 - long option (required)
-        $3 - action to take with argument (required)
-        $4 - whether or not argument is required (required)
-        $5 - the default value for the argument (required, can be blank)
-        $6 - the help text to print when -h is specified (required)
-        $7 - the function used to verify the argument (optional)
-    COMMENT
+	: <<- COMMENT
+	Add an argument to parse for a function
+		$1 - short option (required, can be blank)
+		$2 - long option (required)
+		$3 - action to take with argument (required)
+		$4 - whether or not argument is required (required)
+		$5 - the default value for the argument (required, can be blank)
+		$6 - the help text to print when -h is specified (required)
+		$7 - the function used to verify the argument (optional)
+	COMMENT
 
     declare -A params=([short]=, [long]=arg [action]=positionalvalue [required]=required [default]= [help]= [verify]=)
     while [[ "$1" == *"="* ]];
@@ -389,13 +389,13 @@ function koi::arg {
 }
 
 function koi::addgroup {
-    : <<- COMMENT
-    Add a set of arguments to a group
-        $1 - the name of the group (required)
-        $2 - the property of the group (required)
-        $3 - whether or not the group is required (required)
-        $3+ - are the arguments to add to the group (at least 2 required)
-    COMMENT
+	: <<- COMMENT
+	Add a set of arguments to a group
+		$1 - the name of the group (required)
+		$2 - the property of the group (required)
+		$3 - whether or not the group is required (required)
+		$3+ - are the arguments to add to the group (at least 2 required)
+	COMMENT
 
     if [[ $# -lt 5 ]] ; then
         koi::errortext -c "$koiname: koi::addgroup err: incorrect usage, at least 5 arguments are required"
@@ -508,12 +508,12 @@ function koi::addgroup {
 }
 
 function koi::adddep {
-    : <<- COMMENT
-    Register argument dependencies
-        $1+                - the dependent arguments (required)
-        second to last arg - the dependency property (required)
-        last arg           - the dependency argument (required)
-    COMMENT
+	: <<- COMMENT
+	Register argument dependencies
+		$1+				- the dependent arguments (required)
+		second to last arg - the dependency property (required)
+		last arg		   - the dependency argument (required)
+	COMMENT
 
     # verify usage
     if [[ $# -lt 3 ]] ; then
@@ -622,15 +622,15 @@ function koi::adddep {
 }
 
 function koi::parseargs {
-    : <<- COMMENT
-    Parse previously defined arguments and options
-    Runs the following steps:
-     - verify help commands
-     - resolve joint arguments
-     - configure options
-     - resolve positional arguments
-     - parse arguments (based on action defined by koi::addarg)
-    COMMENT
+	: <<- COMMENT
+	Parse previously defined arguments and options
+	Runs the following steps:
+	 - verify help commands
+	 - resolve joint arguments
+	 - configure options
+	 - resolve positional arguments
+	 - parse arguments (based on action defined by koi::addarg)
+	COMMENT
 
     # verify help command
     if [[ $koirequirehelpactions -eq 1 ]] ; then
@@ -1348,15 +1348,15 @@ function koi::run {
 }
 
 function koi::helptext {
-    : <<- COMMENT
-    Print text for the help menu
-    $1 is which type of help text to print, can be:
-      - clitext
-      - helptext
-      - argtext
-    $2 is the indent size to use, in spaces
-    $3+ is the text to print
-    COMMENT
+	: <<- COMMENT
+	Print text for the help menu
+	$1 is which type of help text to print, can be:
+	  - clitext
+	  - helptext
+	  - argtext
+	$2 is the indent size to use, in spaces
+	$3+ is the text to print
+	COMMENT
 
     if [[ $# -lt 2 ]] ; then
         koi::errortext -c "$koiname: koi::helptext err: incorrect number of arguments, must be at least 2"
