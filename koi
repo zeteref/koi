@@ -640,8 +640,7 @@ function koi::parseargs {
 			if [[ "$__action" == "help" ]] ; then __foundhelp=1 ; fi
 		done
 		if [[ $__foundhelp -eq 0 ]] ; then
-			koi::errortext -c "$koiname: koi::parseargs err: no valid help argument registered for function '${FUNCNAME[1]}'"
-			return 1
+            koi::arg short=-h long=--help action="help" required="optional" help="Auto generated help"
 		fi
 	fi
 
@@ -1318,7 +1317,7 @@ function koi::resolvekoircvalues {
 	fi
 }
 
-function koi::koirun {
+function koi::run {
 	# check for ~/.koirc
 	if [[ -f ~/.koirc ]] ; then
 		koi::parsekoirc
