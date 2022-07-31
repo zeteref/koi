@@ -358,6 +358,36 @@ function koi::addarg {
 	fi
 }
 
+function koi::arg {
+	: <<- COMMENT
+	Add an argument to parse for a function
+		$1 - short option (required, can be blank)
+		$2 - long option (required)
+		$3 - action to take with argument (required)
+		$4 - whether or not argument is required (required)
+		$5 - the default value for the argument (required, can be blank)
+		$6 - the help text to print when -h is specified (required)
+		$7 - the function used to verify the argument (optional)
+	COMMENT
+
+    declare -A params=([short]=, [long]=arg [action]=positionalvalue [required]=required [default]= [help]= [verify]=)
+    while [[ "$1" == *"="* ]];
+    do
+        IFS== read -r key value <<< "$1"
+        params[$key]="$value"
+        shift
+    done
+
+    koi::addarg \
+        "${params[short]}" \
+        "${params[long]}" \
+        "${params[action]}" \
+        "${params[required]}" \
+        "${params[default]}" \
+        "${params[help]}" \
+        "${params[verify]}"
+}
+
 function koi::addgroup {
 	: <<- COMMENT
 	Add a set of arguments to a group
