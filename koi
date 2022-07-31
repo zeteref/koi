@@ -373,7 +373,7 @@ function koi::arg {
     declare -A params=([short]= [long]=arg [action]=positionalvalue [required]=required [default]= [help]= [verify]=)
     while [[ "$1" == *"="* ]];
     do
-        IFS== read -r key value <<< "$1"
+        IFS="=" read -r key value <<< "$1"
         params[$key]="$value"
         shift
     done
