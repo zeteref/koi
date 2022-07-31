@@ -4,72 +4,72 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_action_positionalarray_invalid_with_shortname {
-	__addarg "-a" "aaa" "positionalarray" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "aaa" "positionalarray" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_invalid_with_dash {
-	__addarg "" "-aaa" "positionalarray" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "-aaa" "positionalarray" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_invalid_with_dash_multiple {
-	__addarg "" "--aaa" "positionalarray" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "--aaa" "positionalarray" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_invalid_with_default {
-	__addarg "" "aaa" "positionalarray" "optional" "val" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "optional" "val" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_invalid_multiple_a {
-	__addarg "" "aaa" "positionalarray" "required" "" "help text"
-	__addarg "" "bbb" "positionalarray" "required" "" "help text"
+	koi::addarg "" "aaa" "positionalarray" "required" "" "help text"
+	koi::addarg "" "bbb" "positionalarray" "required" "" "help text"
 	echo "${aaa[@]} ${bbb[@]}"
 }
 
 function test_action_positionalarray_invalid_multiple_b {
-	__addarg "" "aaa" "positionalarray" "optional" "" "help text"
-	__addarg "" "bbb" "positionalarray" "optional" "" "help text"
+	koi::addarg "" "aaa" "positionalarray" "optional" "" "help text"
+	koi::addarg "" "bbb" "positionalarray" "optional" "" "help text"
 	echo "${aaa[@]} ${bbb[@]}"
 }
 
 function test_action_positionalarray_invalid_multiple_c {
-	__addarg "" "aaa" "positionalarray" "required" "" "help text"
-	__addarg "" "bbb" "positionalarray" "optional" "" "help text"
+	koi::addarg "" "aaa" "positionalarray" "required" "" "help text"
+	koi::addarg "" "bbb" "positionalarray" "optional" "" "help text"
 	echo "${aaa[@]} ${bbb[@]}"
 }
 
 function test_action_positionalarray_invalid_with_positionalvalue_a {
-	__addarg "" "aaa" "positionalarray" "required" "" "help text"
-	__addarg "" "bbb" "positionalvalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "required" "" "help text"
+	koi::addarg "" "bbb" "positionalvalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]} $bbb"
 }
 
 function test_action_positionalarray_invalid_with_positionalvalue_b {
-	__addarg "" "aaa" "positionalarray" "required" "" "help text"
-	__addarg "" "bbb" "positionalvalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "required" "" "help text"
+	koi::addarg "" "bbb" "positionalvalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]} $bbb"
 }
 
 function test_action_positionalarray_invalid_with_positionalvalue_c {
-	__addarg "" "aaa" "positionalarray" "optional" "" "help text"
-	__addarg "" "bbb" "positionalvalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "optional" "" "help text"
+	koi::addarg "" "bbb" "positionalvalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]} $bbb"
 }
 
 function test_action_positionalarray_invalid_with_positionalvalue_d {
-	__addarg "" "aaa" "positionalarray" "optional" "" "help text"
-	__addarg "" "bbb" "positionalvalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "optional" "" "help text"
+	koi::addarg "" "bbb" "positionalvalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]} $bbb"
 }
 

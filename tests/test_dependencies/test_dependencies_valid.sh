@@ -4,294 +4,294 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_dependencies_valid_one_dependent_flag {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__adddep "--flag" "dependson" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "dependson" "--glad"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_two_dependents_flags {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__adddep "--flag" "--glad" "dependson" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "--glad" "dependson" "--vlad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad"
 }
 
 function test_dependencies_valid_three_dependents_flags {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addarg "-c" "--clad" "flag" "optional" "" "help text"
-	__adddep "--flag" "--glad" "--vlad" "dependson" "--clad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addarg "-c" "--clad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "--glad" "--vlad" "dependson" "--clad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad $clad"
 }
 
 function test_dependencies_valid_mixed_types_valid {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--barg" "storevalue" "optional" "" "help text"
-	__adddep "--arg" "--flag" "dependson" "--barg"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storevalue" "optional" "" "help text"
+	koi::adddep "--arg" "--flag" "dependson" "--barg"
+	koi::parseargs "$@"
 	echo "$flag $arg $barg"
 }
 
 function test_dependencies_valid_mixed_types_invalid {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--barg" "storevalue" "optional" "" "help text"
-	__adddep "--arg" "--flag" "dependson" "--barg"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storevalue" "optional" "" "help text"
+	koi::adddep "--arg" "--flag" "dependson" "--barg"
+	koi::parseargs "$@"
 	echo "$flag $arg $barg"
 }
 
 function test_dependencies_valid_storearray_valid_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]}"
 }
 
 function test_dependencies_valid_storearray_valid_b {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]}"
 }
 
 function test_dependencies_valid_storearray_valid_c {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__addarg "-b" "--barg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "--barg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "--barg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]} ${barg[@]}"
 }
 
 function test_dependencies_valid_storearray_valid_d {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__addarg "-b" "--barg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "--barg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "--barg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]} ${barg[@]}"
 }
 
 function test_dependencies_valid_storearray_invalid_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]}"
 }
 
 function test_dependencies_valid_storearray_invalid_b {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]}"
 }
 
 function test_dependencies_valid_storearray_invalid_c {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__addarg "-b" "--barg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "--barg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "--barg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]} ${barg[@]}"
 }
 
 function test_dependencies_valid_storearray_invalid_d {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storearray" "optional" "" "help text"
-	__addarg "-b" "--barg" "storearray" "optional" "" "help text"
-	__adddep "--arg" "--barg" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storearray" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storearray" "optional" "" "help text"
+	koi::adddep "--arg" "--barg" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag ${arg[@]} ${barg[@]}"
 }
 
 function test_dependencies_valid_argument_named_dependson {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "" "--dependson" "flag" "optional" "" "help text"
-	__adddep "--dependson" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "" "--dependson" "flag" "optional" "" "help text"
+	koi::adddep "--dependson" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $dependson"
 }
 
 function test_dependencies_valid_missing_dependency {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_missing_dependent {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_joint_arguments_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_joint_arguments_b {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__adddep "--glad" "--vlad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::adddep "--glad" "--vlad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad"
 }
 
 function test_dependencies_valid_mutin_group {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "AND" "optional" "--flag" "--glad"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "AND" "optional" "--flag" "--glad"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_mutor_group {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "OR" "optional" "--flag" "--glad"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "OR" "optional" "--flag" "--glad"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_group_misc {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addarg "-c" "--clad" "flag" "optional" "" "help text"
-	__addgroup "flags1" "XOR" "optional" "--flag" "--glad"
-	__addgroup "flags2" "XOR" "optional" "--glad" "--vlad"
-	__adddep "--flag" "--glad" "dependson" "--clad"
-	__adddep "--vlad" "dependson" "--clad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addarg "-c" "--clad" "flag" "optional" "" "help text"
+	koi::addgroup "flags1" "XOR" "optional" "--flag" "--glad"
+	koi::addgroup "flags2" "XOR" "optional" "--glad" "--vlad"
+	koi::adddep "--flag" "--glad" "dependson" "--clad"
+	koi::adddep "--vlad" "dependson" "--clad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad $clad"
 }
 
 function test_dependencies_valid_dependents_in_mutex {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "optional" "--flag" "--glad"
-	__adddep "--flag" "--glad" "dependson" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "optional" "--flag" "--glad"
+	koi::adddep "--flag" "--glad" "dependson" "--vlad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad"
 }
 
 function test_dependencies_valid_multiple_dependents_single_dependency {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__adddep "--flag" "--glad" "dependson" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "--glad" "dependson" "--vlad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad"
 }
 
 function test_dependencies_valid_single_dependent_multiple_dependencies_valid {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__adddep "--flag" "dependson" "--vlad"
-	__adddep "--flag" "dependson" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "dependson" "--vlad"
+	koi::adddep "--flag" "dependson" "--glad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad"
 }
 
 function test_dependencies_valid_single_dependent_multiple_dependencies_invalid {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__adddep "--flag" "dependson" "--vlad"
-	__adddep "--flag" "dependson" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "dependson" "--vlad"
+	koi::adddep "--flag" "dependson" "--glad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad"
 }
 
 function test_dependencies_valid_multiple_dependency_groups_valid {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addarg "-c" "--clad" "flag" "optional" "" "help text"
-	__adddep "--flag" "dependson" "--glad"
-	__adddep "--glad" "dependson" "--vlad"
-	__adddep "--flag" "dependson" "--clad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addarg "-c" "--clad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "dependson" "--glad"
+	koi::adddep "--glad" "dependson" "--vlad"
+	koi::adddep "--flag" "dependson" "--clad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad $clad"
 }
 
 function test_dependencies_valid_multiple_dependency_groups_invalid_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addarg "-c" "--clad" "flag" "optional" "" "help text"
-	__adddep "--flag" "dependson" "--glad"
-	__adddep "--glad" "dependson" "--vlad"
-	__adddep "--flag" "dependson" "--clad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addarg "-c" "--clad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "dependson" "--glad"
+	koi::adddep "--glad" "dependson" "--vlad"
+	koi::adddep "--flag" "dependson" "--clad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad $clad"
 }
 
 function test_dependencies_valid_multiple_dependency_groups_invalid_b {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addarg "-c" "--clad" "flag" "optional" "" "help text"
-	__adddep "--flag" "dependson" "--glad"
-	__adddep "--glad" "dependson" "--vlad"
-	__adddep "--flag" "dependson" "--clad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addarg "-c" "--clad" "flag" "optional" "" "help text"
+	koi::adddep "--flag" "dependson" "--glad"
+	koi::adddep "--glad" "dependson" "--vlad"
+	koi::adddep "--flag" "dependson" "--clad"
+	koi::parseargs "$@"
 	echo "$flag $glad $vlad $clad"
 }
 
 function test_dependencies_valid_required_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_required_b {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "required" "" "help text"
-	__adddep "--flag" "dependson" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "required" "" "help text"
+	koi::adddep "--flag" "dependson" "--glad"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_required_c {
-	__addarg "-f" "--flag" "flag" "required" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "required" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 
 function test_dependencies_valid_required_d {
-	__addarg "-f" "--flag" "flag" "required" "" "help text"
-	__addarg "-g" "--glad" "flag" "required" "" "help text"
-	__adddep "--glad" "dependson" "--flag"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "required" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "required" "" "help text"
+	koi::adddep "--glad" "dependson" "--flag"
+	koi::parseargs "$@"
 	echo "$flag $glad"
 }
 

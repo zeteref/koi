@@ -4,58 +4,58 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_general_valid_combinations_a {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "" "aaa" "positionalarray" "optional" "" "help text"
-	__addarg "-b" "--bbb" "storearray" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "" "aaa" "positionalarray" "optional" "" "help text"
+	koi::addarg "-b" "--bbb" "storearray" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$flag ${aaa[@]} ${bbb[@]}"
 }
 
 function test_general_valid_combinations_b {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "" "value0" "positionalvalue" "required" "" "help text"
-	__addarg "" "value1" "positionalvalue" "required" "" "help text"
-	__addarg "-a" "--aaa" "storevalue" "required" "" "help text"
-	__addarg "-b" "--bbb" "storevalue" "optional" "10" "help text"
-	__addarg "-c" "--ccc" "flag" "optional" "" "help text"
-	__addarg "-d" "--ddd" "flag" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "" "value0" "positionalvalue" "required" "" "help text"
+	koi::addarg "" "value1" "positionalvalue" "required" "" "help text"
+	koi::addarg "-a" "--aaa" "storevalue" "required" "" "help text"
+	koi::addarg "-b" "--bbb" "storevalue" "optional" "10" "help text"
+	koi::addarg "-c" "--ccc" "flag" "optional" "" "help text"
+	koi::addarg "-d" "--ddd" "flag" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$bbb $value1 $ccc $aaa $value0 $ddd"
 }
 
 function test_general_valid_combinations_c {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "-a" "--aaa" "storearray" "optional" "" "help text" "__verifytest ab"
-	__addarg "-b" "--bbb" "storevalue" "optional" "" "help text" "__verifytest ab"
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "-a" "--aaa" "storearray" "optional" "" "help text" "__verifytest ab"
+	koi::addarg "-b" "--bbb" "storevalue" "optional" "" "help text" "__verifytest ab"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]} ${bbb[@]} $flag"
 }
 
 function test_general_valid_combinations_d {
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--barg" "storevalue" "optional" "" "help text"
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storevalue" "optional" "" "help text"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$arg $barg $flag"
 }
 
 function test_general_valid_crash_on_empty_arguments_a {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_general_valid_crash_on_empty_arguments_b {
-	__addarg "-a" "--aaa" "storevalue" "optional" "foo" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "foo" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function __verifytest {
 	if [[ "${1}${2}" != "abc" ]] ; then
-		__errortext "incorrect"
+		koi::errortext "incorrect"
 	fi
 }
 
@@ -83,5 +83,5 @@ function koitest_run {
 	runtest test_general_valid_combinations_d "-b -f 0" "-a" "-b" "-b" "-f"
 	runtest test_general_valid_crash_on_empty_arguments_a __error__ ""
 	runtest test_general_valid_crash_on_empty_arguments_b __error__ ""
-	runtest __listfunctions "$function_list"
+	runtest koi::listfunctions "$function_list"
 }

@@ -40,22 +40,22 @@ __koidependencies=()
 
 # ============ CLI FUNCTIONS ============ #
 function list {
-	__addarg "-h" "--help" "help" "optional" "" "List all available commands"
-	__addarg "-d" "--docs" "flag" "optional" "" "If included, print command documentation"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "List all available commands"
+	koi::addarg "-d" "--docs" "flag" "optional" "" "If included, print command documentation"
+	koi::parseargs "$@"
 	
 	# shellcheck disable=SC2154
 	if [[ "$docs" -eq 1 ]] ; then
-		__commanddocs
+		koi::commanddocs
 	else
-		__listfunctions
+		koi::listfunctions
 	fi
 }
 
 function help {
-	__addarg "-h" "--help" "help" "optional" "" "Show this menu and exit"
-	__addarg "-v" "--verbose" "flag" "optional" "" "Print verbose command documentation"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "Show this menu and exit"
+	koi::addarg "-v" "--verbose" "flag" "optional" "" "Print verbose command documentation"
+	koi::parseargs "$@"
 
 	# build help menu
 	local __helpoutput
@@ -68,7 +68,7 @@ function help {
 	${koicolorprimary}Available commands:${__reset}
 	$( \
 		local __cmd ; \
-		for __cmd in $(__listfunctions) ; do \
+		for __cmd in $(koi::listfunctions) ; do \
 			echo "  $__cmd" ; \
 		done \
 	)
@@ -81,7 +81,7 @@ function help {
 	# shellcheck disable=SC2154
 	if [[ "$verbose" -eq 1 ]] ; then
 		echo -e "${koicolorprimary}Command documentation:${__reset}"
-		__commanddocs
+		koi::commanddocs
 	else
 		if [[ "$koishowhints" -eq 1 ]] ; then
 			__helpoutput=$(cat <<- EndOfHelp
@@ -98,30 +98,30 @@ function help {
 }
 
 # ============ VERIFYING FUNCTIONS ============ #
-function __verifyfile {
+function koi::verifyfile {
 	# verify that a file exists
 	# $1 is the file to verify
 	if [[ ! -f "$1" ]] ; then
-		__errortext "$koiname: err: no such file '$1'"
+		koi::errortext "$koiname: err: no such file '$1'"
 		return 1
 	fi
 }
 
-function __verifydirectory {
+function koi::verifydirectory {
 	# verify that a directory exists
 	# $1 is the directory to verify
 	if [[ ! -d "$1" ]] ; then
-		__errortext "$koiname: err: no such directory '$1'"
+		koi::errortext "$koiname: err: no such directory '$1'"
 		return 1
 	fi
 }
 
-function __verifyfiletype {
+function koi::verifyfiletype {
 	# verify that a file is of a specific file type
 	# $1 is the filetype to enforce
 	# $2 is the file to verify
 	if [[ $# -ne 2 ]] ; then
-		__errortext -c "$koiname: __verifyfiletype err: incorrect number of arguments (should be 2, filetype and file)"
+		koi::errortext -c "$koiname: koi::verifyfiletype err: incorrect number of arguments (should be 2, filetype and file)"
 		return 1
 	fi
 
@@ -133,28 +133,28 @@ function __verifyfiletype {
 	__file="$2"
 
 	if [[ ! -f "$__file" ]] ; then
-		__errortext "$koiname: err: no such file '$__file'"
+		koi::errortext "$koiname: err: no such file '$__file'"
 		return 1
 	fi
 
 	if [[ "$__file" != *".${__filetype}" ]] ; then
-		__errortext "$koiname: err: argument '$__file' must be a $__filetype file"
+		koi::errortext "$koiname: err: argument '$__file' must be a $__filetype file"
 		return 1
 	fi
 }
 
 # ============ META FUNCTIONS ============ #
-function __commanddocs {
+function koi::commanddocs {
 	local __stdout __stderr __helpoutput __cmd
 	__helpoutput=
-	for __cmd in $(__listfunctions) ; do
+	for __cmd in $(koi::listfunctions) ; do
 		{
 			IFS=$'\n' read -r -d '' __stderr;
 			IFS=$'\n' read -r -d '' __stdout;
-		} < <((printf '\0%s\0' "$(set -e ; __cleararglists ; $__cmd --help)" 1>&2) 2>&1)
+		} < <((printf '\0%s\0' "$(set -e ; koi::cleararglists ; $__cmd --help)" 1>&2) 2>&1)
 
 		if [[ "$__stderr" != "" ]] ; then
-			__errortext "$__stderr"
+			koi::errortext "$__stderr"
 			return 1
 		fi
 
@@ -169,16 +169,16 @@ function __commanddocs {
 	echo -e "$__helpoutput"
 }
 
-function __listfunctions {
+function koi::listfunctions {
 	# shellcheck disable=SC2207
-	functionlist=( $(declare -F | sed -e 's/declare -f //g' -e 's/^[_-].*$//g') )
+	functionlist=( $(declare -F | sed -e 's/declare -f //g' -e 's/^[_-].*$//g' -e 's/^koi::.*$//g') )
 	local __func
 	for __func in "${functionlist[@]}" ; do
 		echo "$__func"
 	done
 }
 
-function __addarg {
+function koi::addarg {
 	: <<- COMMENT
 	Add an argument to parse for a function
 		$1 - short option (required, can be blank)
@@ -190,34 +190,34 @@ function __addarg {
 		$7 - the function used to verify the argument (optional)
 	COMMENT
 
-	if [[ $# -ne 6 && $# -ne 7 ]] ; then __errortext -c "$koiname: __addarg err: incorrect usage, either 6 or 7 arguments are required" ; return 1 ; fi
+	if [[ $# -ne 6 && $# -ne 7 ]] ; then koi::errortext -c "$koiname: koi::addarg err: incorrect usage, either 6 or 7 arguments are required" ; return 1 ; fi
 
 	# short option
 	if [[ "$1" != "" ]] ; then
-		if [[ "$1" != -* || "$1" == --* ]] ; then __errortext -c "$koiname: __addarg err: short option must start with a single dash" ; return 1 ; fi
-		if [[ "${#1}" -gt 2 ]] ; then __errortext -c "$koiname: __addarg err: short options must be a single dash followed by a single letter" ; return 1 ; fi
-		if [[ "$1" == *" "* ]] ; then __errortext -c "$koiname: __addarg err: short option cannot contain a space" ; return 1 ; fi
-		if ! [[ "$1" =~ ^-[a-zA-Z] ]] ; then __errortext -c "$koiname: __addarg err: short option must be a letter" ; return 1 ; fi
+		if [[ "$1" != -* || "$1" == --* ]] ; then koi::errortext -c "$koiname: koi::addarg err: short option must start with a single dash" ; return 1 ; fi
+		if [[ "${#1}" -gt 2 ]] ; then koi::errortext -c "$koiname: koi::addarg err: short options must be a single dash followed by a single letter" ; return 1 ; fi
+		if [[ "$1" == *" "* ]] ; then koi::errortext -c "$koiname: koi::addarg err: short option cannot contain a space" ; return 1 ; fi
+		if ! [[ "$1" =~ ^-[a-zA-Z] ]] ; then koi::errortext -c "$koiname: koi::addarg err: short option must be a letter" ; return 1 ; fi
 	fi
 
 	# long option
-	if [[ "$2" == "" ]] ; then __errortext -c "$koiname: __addarg err: missing long option for argument" ; return 1 ; fi
+	if [[ "$2" == "" ]] ; then koi::errortext -c "$koiname: koi::addarg err: missing long option for argument" ; return 1 ; fi
 	if [[ "$3" == "positionalvalue" || "$3" == "positionalarray" ]] ; then
 		if ! [[ "$2" =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]] ; then
-			__errortext -c "$koiname: __addarg err: positional arguments must be alphanumeric and cannot start with a number"
+			koi::errortext -c "$koiname: koi::addarg err: positional arguments must be alphanumeric and cannot start with a number"
 			return 1
 		fi
 	else
 		if [[ "$2" != --* ]] ; then
-			__errortext -c "$koiname: __addarg err: long option must start with a double dash"
+			koi::errortext -c "$koiname: koi::addarg err: long option must start with a double dash"
 			return 1
 		fi
 		if ! [[ "$2" =~ ^--[a-zA-Z]+[a-zA-Z0-9]* ]] ; then
-			__errortext -c "$koiname: __addarg err: long option must be alphanumeric and cannot start with a number"
+			koi::errortext -c "$koiname: koi::addarg err: long option must be alphanumeric and cannot start with a number"
 			return 1
 		fi
 	fi
-	if [[ "$2" == *" "* ]] ; then __errortext -c "$koiname: __addarg err: long option cannot contain a space" ; return 1 ; fi
+	if [[ "$2" == *" "* ]] ; then koi::errortext -c "$koiname: koi::addarg err: long option cannot contain a space" ; return 1 ; fi
 	local __illegalnames __illegalname
 	__illegalnames=( \
 		BASH BASH_ENV BASH_SUBSHELL BASHPID BASH_VERSINFO BASH_VERSION CDPATH \
@@ -230,8 +230,8 @@ function __addarg {
 	)
 	for __illegalname in "${__illegalnames[@]}" ; do
 		if [[ "$2" == "$__illegalname" || "$2" == --"$__illegalname" ]] ; then
-			__errortext -c "$koiname: __addarg err: illegal long option name '$2'"
-			__errortext -c "  Some variable names are restricted due to their use interally"
+			koi::errortext -c "$koiname: koi::addarg err: illegal long option name '$2'"
+			koi::errortext -c "  Some variable names are restricted due to their use interally"
 			return 1
 		fi
 	done
@@ -239,46 +239,46 @@ function __addarg {
 	# action
 	local __availableactions
 	__availableactions=( help storevalue storearray positionalvalue positionalarray flag )
-	if [[ "$3" == "" ]] ; then __errortext -c "$koiname: __addarg err: missing action for argument" ; return 1 ; fi
+	if [[ "$3" == "" ]] ; then koi::errortext -c "$koiname: koi::addarg err: missing action for argument" ; return 1 ; fi
 	local __found __action
 	__found=0
 	for __action in "${__availableactions[@]}" ; do if [[ "$__action" == "$3" ]] ; then __found=1 ; break ; fi ; done
-	if [[ $__found -eq 0 ]] ; then __errortext -c "$koiname: __addarg err: action must be one of: $(__tmp=$(__join ',' "${__availableactions[@]}") ; echo "${__tmp//,/, }")" ; return 1 ; fi
+	if [[ $__found -eq 0 ]] ; then koi::errortext -c "$koiname: koi::addarg err: action must be one of: $(__tmp=$(koi::join ',' "${__availableactions[@]}") ; echo "${__tmp//,/, }")" ; return 1 ; fi
 	if [[ "$3" == "positionalvalue" || "$3" == "positionalarray" ]] ; then
-		if [[ "$1" != "" ]] ; then __errortext -c "$koiname: __addarg err: positional arguments cannot have a short name" ; return 1 ; fi
-		if [[ "$2" == -* ]] ; then __errortext -c "$koiname: __addarg err: positional arguments long name cannot begin with a dash" ; return 1 ; fi
+		if [[ "$1" != "" ]] ; then koi::errortext -c "$koiname: koi::addarg err: positional arguments cannot have a short name" ; return 1 ; fi
+		if [[ "$2" == -* ]] ; then koi::errortext -c "$koiname: koi::addarg err: positional arguments long name cannot begin with a dash" ; return 1 ; fi
 	fi
 	if [[ "$3" == "help" ]] ; then
-		if [[ "$1" != "-h" ]] ; then __errortext -c "$koiname: __addarg err: help actions must use '-h' for their short names" ; return 1 ; fi
-		if [[ "$2" != "--help" ]] ; then __errortext -c "$koiname: __addarg err: help actions must use '--help' for their long names" ; return 1 ; fi
+		if [[ "$1" != "-h" ]] ; then koi::errortext -c "$koiname: koi::addarg err: help actions must use '-h' for their short names" ; return 1 ; fi
+		if [[ "$2" != "--help" ]] ; then koi::errortext -c "$koiname: koi::addarg err: help actions must use '--help' for their long names" ; return 1 ; fi
 	fi
 
 	# required
-	if [[ "$4" == "" ]] ; then __errortext -c "$koiname: __addarg err: missing required for argument" ; return 1 ; fi
-	if [[ "$4" != "required" && "$4" != "optional" ]] ; then __errortext -c "$koiname: __addarg err: required must be one of: required, optional" ; return 1 ; fi
-	if [[ "$3" == "help" && "$4" == "required" ]] ; then __errortext -c "$koiname: __addarg err: help option cannot be required" ; return 1 ; fi
+	if [[ "$4" == "" ]] ; then koi::errortext -c "$koiname: koi::addarg err: missing required for argument" ; return 1 ; fi
+	if [[ "$4" != "required" && "$4" != "optional" ]] ; then koi::errortext -c "$koiname: koi::addarg err: required must be one of: required, optional" ; return 1 ; fi
+	if [[ "$3" == "help" && "$4" == "required" ]] ; then koi::errortext -c "$koiname: koi::addarg err: help option cannot be required" ; return 1 ; fi
 
 	# default
 	if [[ "$5" != "" ]] ; then
-		if [[ "$4" == "required" ]] ; then __errortext -c "$koiname: __addarg err: required arguments cannot have default values" ; return 1 ; fi
-		if [[ "$3" == "help" ]] ; then __errortext -c "$koiname: __addarg err: help action cannot have a default value" ; return 1 ; fi
-		if [[ "$3" == "flag" ]] ; then __errortext -c "$koiname: __addarg err: flags cannot have default values" ; return 1 ; fi
-		if [[ "$3" == "storearray" ]] ; then __errortext -c "$koiname: __addarg err: arrays cannot have default values" ; return 1 ; fi
-		if [[ "$3" == "positionalvalue" ]] ; then __errortext -c "$koiname: __addarg err: positional values cannot have default values" ; return 1 ; fi
-		if [[ "$3" == "positionalarray" ]] ; then __errortext -c "$koiname: __addarg err: positional arrays cannot have default values" ; return 1 ; fi
+		if [[ "$4" == "required" ]] ; then koi::errortext -c "$koiname: koi::addarg err: required arguments cannot have default values" ; return 1 ; fi
+		if [[ "$3" == "help" ]] ; then koi::errortext -c "$koiname: koi::addarg err: help action cannot have a default value" ; return 1 ; fi
+		if [[ "$3" == "flag" ]] ; then koi::errortext -c "$koiname: koi::addarg err: flags cannot have default values" ; return 1 ; fi
+		if [[ "$3" == "storearray" ]] ; then koi::errortext -c "$koiname: koi::addarg err: arrays cannot have default values" ; return 1 ; fi
+		if [[ "$3" == "positionalvalue" ]] ; then koi::errortext -c "$koiname: koi::addarg err: positional values cannot have default values" ; return 1 ; fi
+		if [[ "$3" == "positionalarray" ]] ; then koi::errortext -c "$koiname: koi::addarg err: positional arrays cannot have default values" ; return 1 ; fi
 	fi
 
 	# help
-	if [[ "$6" == "" ]] ; then __errortext -c "$koiname: __addarg err: missing help text for argument" ; return 1 ; fi
+	if [[ "$6" == "" ]] ; then koi::errortext -c "$koiname: koi::addarg err: missing help text for argument" ; return 1 ; fi
 
 	# verifyingfunction
 	if [[ "$7" != "" ]] ; then
 		local __verifyingcmd __verifyingargs
 		__verifyingcmd="${7%% *}"
 		__verifyingargs="${7##$__verifyingcmd}"
-		if ! declare -F -- "$__verifyingcmd" >/dev/null ; then __errortext -c "$koiname: __addarg err: specified verifying function '$7' is not defined" ; return 1 ; fi
-		if [[ "$3" == "help" ]] ; then __errortext -c "$koiname __addarg err: help options cannot have a verifyingfunction" ; return 1 ; fi
-		if [[ "$3" == "flag" ]] ; then __errortext -c "$koiname __addarg err: flag options cannot have a verifyingfunction" ; return 1 ; fi
+		if ! declare -F -- "$__verifyingcmd" >/dev/null ; then koi::errortext -c "$koiname: koi::addarg err: specified verifying function '$7' is not defined" ; return 1 ; fi
+		if [[ "$3" == "help" ]] ; then koi::errortext -c "$koiname koi::addarg err: help options cannot have a verifyingfunction" ; return 1 ; fi
+		if [[ "$3" == "flag" ]] ; then koi::errortext -c "$koiname koi::addarg err: flag options cannot have a verifyingfunction" ; return 1 ; fi
 	fi
 
 	# update argument lists
@@ -300,10 +300,10 @@ function __addarg {
 		if [[ "$__action" == "positionalarray" ]] ; then __positionalarrays=$(( __positionalarrays + 1 )) ; fi
 	done
 	if [[ $__positionalarrays -gt 1 ]] ; then
-		__errortext -c "$koiname: __addarg err: there cannot be multiple positional array actions because they cannot be parsed unambiguously"
+		koi::errortext -c "$koiname: koi::addarg err: there cannot be multiple positional array actions because they cannot be parsed unambiguously"
 		return 1
 	elif [[ $__positionalarrays -eq 1 && $__positionalvalues -gt 0 ]] ; then
-		__errortext -c "$koiname: __addarg err: there cannot be combinations of positional arrays and positional values because they cannot be parsed unambiguously"
+		koi::errortext -c "$koiname: koi::addarg err: there cannot be combinations of positional arrays and positional values because they cannot be parsed unambiguously"
 		return 1
 	fi
 
@@ -320,10 +320,10 @@ function __addarg {
 			fi
 		done
 		if [[ $__optionalpositionalvalues -gt 1 ]] ; then
-			__errortext -c "$koiname: __addarg err: there cannot be multiple optional positional values because they cannot be parsed unambiguously"
+			koi::errortext -c "$koiname: koi::addarg err: there cannot be multiple optional positional values because they cannot be parsed unambiguously"
 			return 1
 		elif [[ $__optionalpositionalvalues -eq 1 && $__requiredpositionalvalues -gt 0 ]] ; then
-			__errortext -c "$koiname: __addarg err: there cannot be combinations of optional and required positional values because they cannot be parsed unambiguously"
+			koi::errortext -c "$koiname: koi::addarg err: there cannot be combinations of optional and required positional values because they cannot be parsed unambiguously"
 			return 1
 		fi
 	fi
@@ -349,16 +349,16 @@ function __addarg {
 	__shortunique=$(printf '%s\n' "${__compareshort[@]}" | awk '!($0 in seen){seen[$0];c++} END {print c}')
 	__longunique=$(printf '%s\n' "${__comparelong[@]}" | awk '!($0 in seen){seen[$0];c++} END {print c}')
 	if [[ "$__shortunique" != "${#__compareshort[@]}" ]] ; then
-		__errortext -c "$koiname: __addarg err: short option names must be unique"
+		koi::errortext -c "$koiname: koi::addarg err: short option names must be unique"
 		return 1
 	fi
 	if [[ "$__longunique" != "${#__comparelong[@]}" ]] ; then
-		__errortext -c "$koiname: __addarg err: long option names must be unique"
+		koi::errortext -c "$koiname: koi::addarg err: long option names must be unique"
 		return 1
 	fi
 }
 
-function __addgroup {
+function koi::addgroup {
 	: <<- COMMENT
 	Add a set of arguments to a group
 		$1 - the name of the group (required)
@@ -368,7 +368,7 @@ function __addgroup {
 	COMMENT
 
 	if [[ $# -lt 5 ]] ; then
-		__errortext -c "$koiname: __addgroup err: incorrect usage, at least 5 arguments are required"
+		koi::errortext -c "$koiname: koi::addgroup err: incorrect usage, at least 5 arguments are required"
 		return 1
 	fi
 
@@ -376,7 +376,7 @@ function __addgroup {
 
 	# group name
 	if ! [[ "$1" =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]] ; then
-		__errortext -c "$koiname: __addgroup err: name must be alphanumeric and cannot start with a number"
+		koi::errortext -c "$koiname: koi::addgroup err: name must be alphanumeric and cannot start with a number"
 		return 1
 	fi
 
@@ -386,13 +386,13 @@ function __addgroup {
 	__found=0
 	for __prop in "${__validproperties[@]}" ; do if [[ "$__prop" == "$2" ]] ; then __found=1 ; break ; fi ; done
 	if [[ $__found -eq 0 ]] ; then
-		__errortext -c "$koiname: __addgroup err: group property must be one of: $(__tmp=$(__join ',' "${__validproperties[@]}") ; echo "${__tmp//,/, }")"
+		koi::errortext -c "$koiname: koi::addgroup err: group property must be one of: $(__tmp=$(koi::join ',' "${__validproperties[@]}") ; echo "${__tmp//,/, }")"
 		return 1
 	fi
 
 	# group required
 	if [[ "$3" != "required" && "$3" != "optional" ]] ; then
-		__errortext -c "$koiname: __addgroup err: group required must be one of: required, optional"
+		koi::errortext -c "$koiname: koi::addgroup err: group required must be one of: required, optional"
 		return 1
 	fi
 
@@ -420,25 +420,25 @@ function __addgroup {
 			fi
 		done
 
-		# argument must be registered with __addarg
+		# argument must be registered with koi::addarg
 		if [[ $__found -eq 0 ]] ; then
 			if [[ "${__arg:0:1}" == "-" && "${__arg:0:2}" != "--" ]] ; then
-				__errortext -c "$koiname: __addgroup err: must use long options when adding arguments to a group"
+				koi::errortext -c "$koiname: koi::addgroup err: must use long options when adding arguments to a group"
 			else
-				__errortext -c "$koiname: __addgroup err: no such registered argument '$__arg'"
+				koi::errortext -c "$koiname: koi::addgroup err: no such registered argument '$__arg'"
 			fi
 			return 1
 		fi
 
 		# can only register flag, storevalue, storearray actions
 		if [[ "$__action" != "flag" && "$__action" != "storevalue" && "$__action" != "storearray" ]] ; then
-			__errortext -c "$koiname: __addgroup err: cannot add $__action argument to a group"
+			koi::errortext -c "$koiname: koi::addgroup err: cannot add $__action argument to a group"
 			return 1
 		fi
 
 		# can only register optional arguments
 		if [[ "$__required" != "optional" ]] ; then
-			__errortext -c "$koiname: __addgroup err: cannot add required arguments to a group"
+			koi::errortext -c "$koiname: koi::addgroup err: cannot add required arguments to a group"
 			return 1
 		fi
 		__koigroupvalues=( "${__koigroupvalues[@]}" "${__arg}:${__name}" )
@@ -449,7 +449,7 @@ function __addgroup {
 	local __argingroupduplicates
 	__argingroupduplicates=$(printf '%s\n' "${__argsingroup[@]}" | awk '!($0 in seen){seen[$0];c++} END {print c}')
 	if [[ "$__argingroupduplicates" != "${#__argsingroup[@]}" ]] ; then
-		__errortext -c "$koiname: __addgroup err: arguments in group must be unique"
+		koi::errortext -c "$koiname: koi::addgroup err: arguments in group must be unique"
 		return 1
 	fi
 
@@ -467,7 +467,7 @@ function __addgroup {
 				fi
 
 				if [[ $__founddependent -eq 1 && $__founddependency -eq 1 ]] ; then
-					__errortext -c "$koiname: __addgroup err: cannot add '${__dep%:*}' and '${__dep#*:}' to a mutually exclusive group because '${__dep%:*}' depends on '${__dep#*:}'"
+					koi::errortext -c "$koiname: koi::addgroup err: cannot add '${__dep%:*}' and '${__dep#*:}' to a mutually exclusive group because '${__dep%:*}' depends on '${__dep#*:}'"
 					return
 				fi
 			done
@@ -477,7 +477,7 @@ function __addgroup {
 	__koigroupmeta=( "${__koigroupmeta[@]}" "${__name}:${__count}:${__grouprequired}:${__property}" )
 }
 
-function __adddep {
+function koi::adddep {
 	: <<- COMMENT
 	Register argument dependencies
 		$1+                - the dependent arguments (required)
@@ -487,7 +487,7 @@ function __adddep {
 
 	# verify usage
 	if [[ $# -lt 3 ]] ; then
-		__errortext -c "$koiname: __adddep err: incorrect usage, at least 3 arguments are required"
+		koi::errortext -c "$koiname: koi::adddep err: incorrect usage, at least 3 arguments are required"
 		return 1
 	fi
 
@@ -498,7 +498,7 @@ function __adddep {
 
 	for __entity in "$@" ; do
 
-		# verify argument is registered via __addarg
+		# verify argument is registered via koi::addarg
 		__found=0
 		for __i in "${!__koilongoptions[@]}" ; do
 			__arg="${__koilongoptions[$__i]}"
@@ -517,9 +517,9 @@ function __adddep {
 				continue
 			else
 				if [[ "${__entity:0:1}" == "-" && "${__entity:0:2}" != "--" ]] ; then
-					__errortext -c "$koiname: __adddep err: must use long options when adding dependencies"
+					koi::errortext -c "$koiname: koi::adddep err: must use long options when adding dependencies"
 				else
-					__errortext -c "$koiname: __adddep err: no such registered argument '$__entity'"
+					koi::errortext -c "$koiname: koi::adddep err: no such registered argument '$__entity'"
 				fi
 				return 1
 			fi
@@ -527,7 +527,7 @@ function __adddep {
 
 		# can only use flag, storevalue, storearray actions
 		if [[ "$__action" != "flag" && "$__action" != "storevalue" && "$__action" != "storearray" ]] ; then
-			__errortext -c "$koiname: __adddep err: cannot add dependency for $__action argument"
+			koi::errortext -c "$koiname: koi::adddep err: cannot add dependency for $__action argument"
 			return 1
 		fi
 
@@ -540,7 +540,7 @@ function __adddep {
 
 	# verify property was found
 	if [[ $__founddep -eq 0 ]] ; then
-		__errortext -c "$koiname: __adddep err: missing dependency property, must be 'dependson'"
+		koi::errortext -c "$koiname: koi::adddep err: missing dependency property, must be 'dependson'"
 		return 1
 	fi
 
@@ -565,7 +565,7 @@ function __adddep {
 					__grouparray=( ${__group//:/ } )
 					if [[ "${__grouparray[0]}" == "$__dependentgroup" && "${__grouparray[0]}" == "$__dependencygroup" ]] ; then
 						if [[ "${__grouparray[3]}" == "XOR" ]] ; then
-							__errortext -c "$koiname: __adddep err: cannot add dependency, '$__arg' and '$__entity' are in the mutually exclusive group '${__grouparray[0]}'"
+							koi::errortext -c "$koiname: koi::adddep err: cannot add dependency, '$__arg' and '$__entity' are in the mutually exclusive group '${__grouparray[0]}'"
 							return 1
 						fi
 						break
@@ -577,7 +577,7 @@ function __adddep {
 
 		# add to dependencies
 		if [[ "$__arg" == "$__entity" ]] ; then
-			__errortext -c "$koiname: __adddep err: '$__arg' cannot depend on itself"
+			koi::errortext -c "$koiname: koi::adddep err: '$__arg' cannot depend on itself"
 			return 1
 		fi
 		__koidependencies=( "${__koidependencies[@]}" "${__arg}:${__entity}" )
@@ -586,12 +586,12 @@ function __adddep {
 	# verify uniqueness among defined dependencies
 	__deps=$(printf '%s\n' "${__koidependencies[@]}" | awk '!($0 in seen){seen[$0];c++} END {print c}')
 	if [[ "$__deps" != "${#__koidependencies[@]}" ]] ; then
-		__errortext -c "$koiname: __adddep err: dependencies must be unique"
+		koi::errortext -c "$koiname: koi::adddep err: dependencies must be unique"
 		return 1
 	fi
 }
 
-function __parseargs {
+function koi::parseargs {
 	: <<- COMMENT
 	Parse previously defined arguments and options
 	Runs the following steps:
@@ -599,7 +599,7 @@ function __parseargs {
 	 - resolve joint arguments
 	 - configure options
 	 - resolve positional arguments
-	 - parse arguments (based on action defined by __addarg)
+	 - parse arguments (based on action defined by koi::addarg)
 	COMMENT
 
 	# verify help command
@@ -610,7 +610,7 @@ function __parseargs {
 			if [[ "$__action" == "help" ]] ; then __foundhelp=1 ; fi
 		done
 		if [[ $__foundhelp -eq 0 ]] ; then
-			__errortext -c "$koiname: __parseargs err: no valid help argument registered for function '${FUNCNAME[1]}'"
+			koi::errortext -c "$koiname: koi::parseargs err: no valid help argument registered for function '${FUNCNAME[1]}'"
 			return 1
 		fi
 	fi
@@ -712,7 +712,7 @@ function __parseargs {
 		fi
 
 		# check if we're still missing the option
-		if [[ "$__option" == "" ]] ; then __errortext "$koiname: err: no such option '$__key'" ; return 1 ; fi
+		if [[ "$__option" == "" ]] ; then koi::errortext "$koiname: err: no such option '$__key'" ; return 1 ; fi
 
 		# figure out what to do with option
 		# get variable from longoption
@@ -855,9 +855,9 @@ function __parseargs {
 				fi
 
 				if [[ "${__groupproperty}" == "XOR" || "${__groupproperty}" == "OR" ]] ; then
-					__argumentgrouphelptext="${__argumentgrouphelptext}${__startrequiredtext}$(__tmp=$(__join '|' "${__grouptext[@]}") ; echo "${__tmp//|/ | }")${__endrequiredtext} "
+					__argumentgrouphelptext="${__argumentgrouphelptext}${__startrequiredtext}$(__tmp=$(koi::join '|' "${__grouptext[@]}") ; echo "${__tmp//|/ | }")${__endrequiredtext} "
 				elif [[ "${__groupproperty}" == "AND" ]] ; then
-					__argumentgrouphelptext="${__argumentgrouphelptext}${__startrequiredtext}$(__tmp=$(__join '&' "${__grouptext[@]}") ; echo "${__tmp//&/ & }")${__endrequiredtext} "
+					__argumentgrouphelptext="${__argumentgrouphelptext}${__startrequiredtext}$(__tmp=$(koi::join '&' "${__grouptext[@]}") ; echo "${__tmp//&/ & }")${__endrequiredtext} "
 				fi
 			done
 
@@ -927,7 +927,7 @@ function __parseargs {
 				__subcommandcmd="${FUNCNAME[1]} "
 				__subcommandhelptext="\n${__koihelptexts[$__index]}"
 			fi
-			__finaloutput="$(__helptext clitext 0 "${__finaloutput}${koihelpmenuprefix}${koicolorsecondary}${koiname} ${__subcommandcmd}${__helphelptext}${__argumentgrouphelptext}${__argumentshelptext}${__positionalhelptext}${__reset}${__subcommandhelptext}\n")"
+			__finaloutput="$(koi::helptext clitext 0 "${__finaloutput}${koihelpmenuprefix}${koicolorsecondary}${koiname} ${__subcommandcmd}${__helphelptext}${__argumentgrouphelptext}${__argumentshelptext}${__positionalhelptext}${__reset}${__subcommandhelptext}\n")"
 			local __i
 			for __i in "${!__koishortoptions[@]}" ; do
 
@@ -990,14 +990,14 @@ function __parseargs {
 					fi
 				done
 
-				__depsstr="$(__tmp=$(__join ',' "${__depslist[@]}") ; echo "${__tmp//,/, }")"
+				__depsstr="$(__tmp=$(koi::join ',' "${__depslist[@]}") ; echo "${__tmp//,/, }")"
 				if [[ "${#__depslist[@]}" -gt 0 ]] ; then
 					__output="${__output}(depends on: $__depsstr) "
 				fi
 
 				__output="${__output}\n"
 
-				__finaloutput="${__finaloutput}$(__helptext argtext "$__maxindent" "\n$__output")"
+				__finaloutput="${__finaloutput}$(koi::helptext argtext "$__maxindent" "\n$__output")"
 			done
 
 			# print help output
@@ -1016,7 +1016,7 @@ function __parseargs {
 		# handle options with arguments that need to be validated
 		else
 			if [[ "$2" == "" ]] ; then
-				__errortext "$koiname: err: missing value for argument ${__koilongoptions[$__index]}"
+				koi::errortext "$koiname: err: missing value for argument ${__koilongoptions[$__index]}"
 				return 1
 			fi
 
@@ -1058,7 +1058,7 @@ function __parseargs {
 		__varname="${__koilongoptions[$__index]#--}"
 		if [[ "${__koirequireds[$__index]}" == "required" ]] ; then
 			if [[ "${!__varname}" == "" ]] ; then
-				__errortext "$koiname: err: missing required argument ${__koilongoptions[$__index]}"
+				koi::errortext "$koiname: err: missing required argument ${__koilongoptions[$__index]}"
 				return 1
 			fi
 		else
@@ -1099,7 +1099,7 @@ function __parseargs {
 
 		# it is illegal for a dependent to be present without its dependency
 		if [[ $__founddependent -eq 1 && $__founddependency -eq 0 ]] ; then
-			__errortext "$koiname: err: '$__dependent' must be used with '$__dependency'"
+			koi::errortext "$koiname: err: '$__dependent' must be used with '$__dependency'"
 			return 1
 		fi
 	done
@@ -1155,15 +1155,15 @@ function __parseargs {
 		# determine if parsed args fit into group required
 		if [[ "${#__parsedargsingroup[@]}" -eq 0 ]] ; then
 			if [[ "$__grouprequired" == "required" ]] ; then
-				__argsingroupstr=$(__tmp=$(__join ',' "${__argsingroup[@]}") ; echo "${__tmp//,/, }")
+				__argsingroupstr=$(__tmp=$(koi::join ',' "${__argsingroup[@]}") ; echo "${__tmp//,/, }")
 				if [[ "$__groupproperty" == "XOR" ]] ; then
-					__errortext "$koiname: err: exactly one argument from the mutually exclusive group is required: ${__argsingroupstr}"
+					koi::errortext "$koiname: err: exactly one argument from the mutually exclusive group is required: ${__argsingroupstr}"
 					return 1
 				elif [[ "$__groupproperty" == "OR" ]] ; then
-					__errortext "$koiname: err: at least one argument from the group is required: ${__argsingroupstr}"
+					koi::errortext "$koiname: err: at least one argument from the group is required: ${__argsingroupstr}"
 					return 1
 				elif [[ "$__groupproperty" == "AND" ]] ; then
-					__errortext "$koiname: err: all of the arguments from the mutually inclusive group are required: ${__argsingroupstr}"
+					koi::errortext "$koiname: err: all of the arguments from the mutually inclusive group are required: ${__argsingroupstr}"
 					return 1
 				fi
 			else
@@ -1174,16 +1174,16 @@ function __parseargs {
 		# determine if parsed args fit into defined groups
 		if [[ "$__groupproperty" == "XOR" ]] ; then
 			if [[ "${#__parsedargsingroup[@]}" -ne 1 ]] ; then
-				__argsingroupstr=$(__tmp=$(__join ',' "${__argsingroup[@]}") ; echo "${__tmp//,/, }")
-				__errortext "$koiname: err: only one argument in the mutually exclusive group is allowed: ${__argsingroupstr}"
+				__argsingroupstr=$(__tmp=$(koi::join ',' "${__argsingroup[@]}") ; echo "${__tmp//,/, }")
+				koi::errortext "$koiname: err: only one argument in the mutually exclusive group is allowed: ${__argsingroupstr}"
 				return 1
 			fi
 		elif [[ "$__groupproperty" == "OR" ]] ; then
 			:
 		elif [[ "$__groupproperty" == "AND" ]] ; then
 			if [[ "${#__parsedargsingroup[@]}" -ne "${__groupsize}" ]] ; then
-				__argsingroupstr=$(__tmp=$(__join ',' "${__argsingroup[@]}") ; echo "${__tmp//,/, }")
-				__errortext "$koiname: err: all of the arguments in the mutually inclusive group are required, if any are provided: ${__argsingroupstr}"
+				__argsingroupstr=$(__tmp=$(koi::join ',' "${__argsingroup[@]}") ; echo "${__tmp//,/, }")
+				koi::errortext "$koiname: err: all of the arguments in the mutually inclusive group are required, if any are provided: ${__argsingroupstr}"
 				return 1
 			fi
 		fi
@@ -1191,7 +1191,7 @@ function __parseargs {
 	done
 }
 
-function __join {
+function koi::join {
 	# join a set of arguments with given character
 	local IFS
 	typeset IFS="$1"
@@ -1199,7 +1199,7 @@ function __join {
 	echo "$*"
 }
 
-function __cleararglists {
+function koi::cleararglists {
 	# clear the argument lists
 	__koishortoptions=()
 	__koilongoptions=()
@@ -1213,11 +1213,11 @@ function __cleararglists {
 	__koiparsedargs=()
 }
 
-function __parsekoirc {
+function koi::parsekoirc {
 	# parse the ~/.koirc
 
 	if [[ ! -f ~/.koirc ]] ; then
-		__errortext -c "$koiname: __parsekoirc err: no such file ~/.koirc"
+		koi::errortext -c "$koiname: koi::parsekoirc err: no such file ~/.koirc"
 		return 1
 	fi
 
@@ -1233,7 +1233,7 @@ function __parsekoirc {
 		if [[ "$__line" == "" ]] ; then continue ; fi
 		if [[ "${__line:0:1}" == "#" ]] ; then continue ; fi
 		if [[ "$__line" != *=* ]] ; then
-			__errortext "$koiname: err: invalid syntax in ~/.koirc, __line $__linecount"
+			koi::errortext "$koiname: err: invalid syntax in ~/.koirc, __line $__linecount"
 			return 1
 		fi
 		__koioption=$(echo "${__line%=*}" | xargs)
@@ -1245,20 +1245,20 @@ function __parsekoirc {
 			if [[ "$__option" == "$__koioption" ]] ; then __found=1 ; fi
 		done
 		if [[ $__found -eq 0 ]] ; then
-			__errortext "$koiname: err: invalid option declared in ~/.koirc, '$__koioption' is not configurable"
+			koi::errortext "$koiname: err: invalid option declared in ~/.koirc, '$__koioption' is not configurable"
 			return 1
 		fi
 
 		# set up variable
 		__koivalue=$(echo "${__line#${__koioption}*=}" | xargs)
-		__resolvedkoivalue="$(__resolvekoircvalues "$__koivalue")"
+		__resolvedkoivalue="$(koi::resolvekoircvalues "$__koivalue")"
 		# shellcheck disable=SC2229,SC2086
 		read -r $__koioption <<< "$__resolvedkoivalue"
 
 	done < ~/.koirc
 }
 
-function __resolvekoircvalues {
+function koi::resolvekoircvalues {
 	# resolve a .koirc value
 	# $1 is the value to resolve
 	if [[ "$1" == true ]] ; then
@@ -1288,37 +1288,37 @@ function __resolvekoircvalues {
 	fi
 }
 
-function __koirun {
+function koi::koirun {
 	# check for ~/.koirc
 	if [[ -f ~/.koirc ]] ; then
-		__parsekoirc
+		koi::parsekoirc
 	fi
 
 	# run logic
-	if declare -F -- "__koimain" >/dev/null ; then
+	if declare -F -- "koi::main" >/dev/null ; then
 		__koisubcommands=0
-		__koimain "$@"
+		koi::main "$@"
 	elif declare -F -- "${1:-}" >/dev/null ; then
 		"$@"
 	else
 		if [[ $# -eq 0 ]] ; then
-			__errortext -c "$koiname: err: a subcommand is required, but one was not provided"
+			koi::errortext -c "$koiname: err: a subcommand is required, but one was not provided"
 			# shellcheck disable=SC2207
-			local funcs=( $(__listfunctions) )
+			local funcs=( $(koi::listfunctions) )
 			local cmds
 			cmds=$(printf ", %s" "${funcs[@]}")
-			__errortext "  available subcommands:${cmds:1}"
-			__errortext "  use '$koiname help --verbose' for full documentation"
+			koi::errortext "  available subcommands:${cmds:1}"
+			koi::errortext "  use '$koiname help --verbose' for full documentation"
 			exit 1
 		else
-			__errortext -c "$koiname: err: no such command '$1'"
-			__errortext "  Use '$koiname help' for available commands"
+			koi::errortext -c "$koiname: err: no such command '$1'"
+			koi::errortext "  Use '$koiname help' for available commands"
 			exit 1
 		fi
 	fi
 }
 
-function __helptext {
+function koi::helptext {
 	: <<- COMMENT
 	Print text for the help menu
 	$1 is which type of help text to print, can be:
@@ -1330,7 +1330,7 @@ function __helptext {
 	COMMENT
 
 	if [[ $# -lt 2 ]] ; then
-		__errortext -c "$koiname: __helptext err: incorrect number of arguments, must be at least 2"
+		koi::errortext -c "$koiname: koi::helptext err: incorrect number of arguments, must be at least 2"
 		return 1
 	fi
 
@@ -1380,12 +1380,12 @@ function __helptext {
 		fi
 		echo -e "$__output"
 	else
-		__errortext -c "$koiname: __helptext err: provided text type is not one of: clitext, helptext, argtext"
+		koi::errortext -c "$koiname: koi::helptext err: provided text type is not one of: clitext, helptext, argtext"
 		return 1
 	fi
 }
 
-function __errortext {
+function koi::errortext {
 	if [[ "$1" == "-c" || "$1" == "--color" ]] ; then
 		shift
 		>&2 echo -e "${__red}$*${__reset}"

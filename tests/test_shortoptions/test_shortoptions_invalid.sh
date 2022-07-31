@@ -4,45 +4,45 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_shortoption_invalid_non_alphanumeric_shortoption {
-	__addarg "-_" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-_" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_shortoption_invalid_non_unique_shortoptions {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__addarg "-a" "--bbb" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::addarg "-a" "--bbb" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa $bbb"
 }
 
 function test_shortoption_invalid_number_shortoptions {
-	__addarg "-9" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-9" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_shortoption_invalid_invalid_length_long {
-	__addarg "-aaa" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-aaa" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_shortoption_invalid_invalid_length_short {
-	__addarg "-" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_shortoption_invalid_invalid_no_dash {
-	__addarg "a" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_shortoption_invalid_invalid_more_than_one_dash {
-	__addarg "--aaa" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "--aaa" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 

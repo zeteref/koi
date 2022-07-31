@@ -4,59 +4,59 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_action_valid_storeavlue_optional_with_value {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_action_valid_storeavlue_optional_without_value {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_action_valid_storevalue_required {
-	__addarg "-a" "--aaa" "storevalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_action_valid_storevalue_with_default {
-	__addarg "-a" "--aaa" "storevalue" "optional" "foo" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "foo" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_action_valid_storevalue_multiple_a {
-	__addarg "-a" "--aaa" "storevalue" "required" "" "help text"
-	__addarg "-b" "--bbb" "storevalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "required" "" "help text"
+	koi::addarg "-b" "--bbb" "storevalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa $bbb"
 }
 
 function test_action_valid_storevalue_multiple_b {
-	__addarg "-a" "--aaa" "storevalue" "required" "" "help text"
-	__addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "required" "" "help text"
+	koi::addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa $bbb"
 }
 
 function test_action_valid_storevalue_multiple_c {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa $bbb"
 }
 
 function test_action_valid_storevalue_overwrite_required {
-	__addarg "-a" "--aaa" "storevalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_action_valid_storevalue_overwrite_optional {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 

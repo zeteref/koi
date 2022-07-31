@@ -7,21 +7,21 @@
 Easily add command line arguments for Bash functions! Inspired by Python's [argparse](https://docs.python.org/3/library/argparse.html).
 ```bash
 function sendrequest {
-    __addarg "-h" "--help" "help" "optional" "" "Send an HTTP request"
-    __addarg "-m" "--method" "storevalue" "optional" "GET" "The HTTP method"
-    __addarg "-u" "--url" "storevalue" "required" "" "The url of the HTTP request"
-    __parseargs "$@"
+    koi::addarg "-h" "--help" "help" "optional" "" "Send an HTTP request"
+    koi::addarg "-m" "--method" "storevalue" "optional" "GET" "The HTTP method"
+    koi::addarg "-u" "--url" "storevalue" "required" "" "The url of the HTTP request"
+    koi::parseargs "$@"
     curl -X "$method" "$url"
 }
 ```
 ```bash
 function checkstockprice {
-    __addarg "-h" "--help" "help" "optional" "" "Check a stock's price"
-    __addarg "" "symbol" "positionalarray" "required" "" "The ticker symbol(s) to check"
-    __addarg "-e" "--exchange" "storevalue" "optional" "NYSE" "The exchange to use"
-    __addarg "-p" "--port" "storevalue" "required" "" "The port to use"
-    __addarg "-q" "--quiet" "flag" "optional" "" "If included, run in quiet mode"
-    __parseargs "$@"
+    koi::addarg "-h" "--help" "help" "optional" "" "Check a stock's price"
+    koi::addarg "" "symbol" "positionalarray" "required" "" "The ticker symbol(s) to check"
+    koi::addarg "-e" "--exchange" "storevalue" "optional" "NYSE" "The exchange to use"
+    koi::addarg "-p" "--port" "storevalue" "required" "" "The port to use"
+    koi::addarg "-q" "--quiet" "flag" "optional" "" "If included, run in quiet mode"
+    koi::parseargs "$@"
     # check the stock price
 }
 ```

@@ -4,223 +4,223 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_groups_valid_name_with_number {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags2" "XOR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags2" "XOR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_optional_mutex_blank {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_optional_mutin_blank {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "AND" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "AND" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_optional_mutor_blank {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "OR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "OR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_optional_two_mutex {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_optional_two_mutin {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "AND" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "AND" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_optional_two_mutor {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "OR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "OR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_optional_three_mutex {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "optional" "--flag" "--glad" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "optional" "--flag" "--glad" "--vlad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $vlad"
 }
 
 function test_groups_valid_optional_three_mutin {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addgroup "flags" "AND" "optional" "--flag" "--glad" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "AND" "optional" "--flag" "--glad" "--vlad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $vlad"
 }
 
 function test_groups_valid_optional_three_mutor {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addgroup "flags" "OR" "optional" "--flag" "--glad" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "OR" "optional" "--flag" "--glad" "--vlad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $vlad"
 }
 
 function test_groups_valid_required_two_mutex {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "required" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "required" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_required_two_mutin {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "AND" "required" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "AND" "required" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_required_two_mutor {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "OR" "required" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "OR" "required" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_valid_required_three_mutex {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "required" "--flag" "--glad" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "required" "--flag" "--glad" "--vlad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $vlad"
 }
 
 function test_groups_valid_required_three_mutin {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addgroup "flags" "AND" "required" "--flag" "--glad" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "AND" "required" "--flag" "--glad" "--vlad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $vlad"
 }
 
 function test_groups_valid_required_three_mutor {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "-v" "--vlad" "flag" "optional" "" "help text"
-	__addgroup "flags" "OR" "required" "--flag" "--glad" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "-v" "--vlad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "OR" "required" "--flag" "--glad" "--vlad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $vlad"
 }
 
 function test_groups_valid_optional_mixed_blank {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addgroup "group" "XOR" "optional" "--flag" "--arg"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "--flag" "--arg"
+	koi::parseargs "$@"
 
 	echo "$flag $arg"
 }
 
 function test_groups_valid_optional_mixed_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addgroup "group" "XOR" "optional" "--flag" "--arg"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "--flag" "--arg"
+	koi::parseargs "$@"
 
 	echo "$flag $arg"
 }
 
 function test_groups_valid_optional_mixed_b {
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--barg" "storevalue" "optional" "" "help text"
-	__addgroup "group" "AND" "optional" "--arg" "--barg"
-	__parseargs "$@"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storevalue" "optional" "" "help text"
+	koi::addgroup "group" "AND" "optional" "--arg" "--barg"
+	koi::parseargs "$@"
 
 	echo "$arg $barg"
 }
 
 function test_groups_valid_required_mixed_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addgroup "group" "XOR" "required" "--flag" "--arg"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "required" "--flag" "--arg"
+	koi::parseargs "$@"
 
 	echo "$flag $arg"
 }
 
 function test_groups_valid_required_mixed_b {
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--barg" "storevalue" "optional" "" "help text"
-	__addgroup "group" "AND" "required" "--arg" "--barg"
-	__parseargs "$@"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storevalue" "optional" "" "help text"
+	koi::addgroup "group" "AND" "required" "--arg" "--barg"
+	koi::parseargs "$@"
 
 	echo "$arg $barg"
 }
 
 function test_group_valid_no_short_option {
-	__addarg "" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "AND" "required" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "AND" "required" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_group_valid_with_array_a {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-a" "--arr" "storearray" "optional" "" "help text"
-	__addgroup "group" "XOR" "required" "--flag" "--arr"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-a" "--arr" "storearray" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "required" "--flag" "--arr"
+	koi::parseargs "$@"
 
 	echo "${arr[@]} $flag"
 }
 
 function test_group_valid_with_array_b {
-	__addarg "-a" "--arr" "storearray" "optional" "" "help text"
-	__addarg "-b" "--bar" "storearray" "optional" "" "help text"
-	__addgroup "arrays" "XOR" "required" "--arr" "--bar"
-	__parseargs "$@"
+	koi::addarg "-a" "--arr" "storearray" "optional" "" "help text"
+	koi::addarg "-b" "--bar" "storearray" "optional" "" "help text"
+	koi::addgroup "arrays" "XOR" "required" "--arr" "--bar"
+	koi::parseargs "$@"
 
 	echo "${arr[@]} ${bar[@]}" 
 }

@@ -8,11 +8,11 @@ To use koi:
   3. override the 'koidescription' variable with the description of your script
 
 To add arguments:
-  1. add arguments to each function with __addarg
-  2. parse the arguments with __parseargs "$@"
+  1. add arguments to each function with koi::addarg
+  2. parse the arguments with koi::parseargs "$@"
 
-To run the script, use the __koirun function at the very end of the script:
-  __koirun "$@"
+To run the script, use the koi::koirun function at the very end of the script:
+  koi::koirun "$@"
 COMMENT
 
 source ../../koi
@@ -26,45 +26,45 @@ koidescription="Helpful template to demonstrate what argument options are availa
 # NOTE: this function will cause errors when actually run due to ambiguity, it is only for demo purposes
 function myfunction {
 	# help
-	__addarg "-h" "--help" "help" "optional" "" "A helpful documentation message about myfunction"
+	koi::addarg "-h" "--help" "help" "optional" "" "A helpful documentation message about myfunction"
 
 	# storing values
-	__addarg "-a" "--aaa" "storevalue" "required" "" "A required argument"
-	__addarg "-b" "--bbb" "storevalue" "optional" "" "An optional argument"
-	__addarg "-c" "--ccc" "storevalue" "optional" "default value" "An optional argument with a default value"
+	koi::addarg "-a" "--aaa" "storevalue" "required" "" "A required argument"
+	koi::addarg "-b" "--bbb" "storevalue" "optional" "" "An optional argument"
+	koi::addarg "-c" "--ccc" "storevalue" "optional" "default value" "An optional argument with a default value"
 
 	# store arrays
-	__addarg "-d" "--ddd" "storearray" "required" "" "An array where at least one value is required"
-	__addarg "-e" "--eee" "storearray" "optional" "" "An optional array"
+	koi::addarg "-d" "--ddd" "storearray" "required" "" "An array where at least one value is required"
+	koi::addarg "-e" "--eee" "storearray" "optional" "" "An optional array"
 
 	# positional values
-	__addarg "-f" "--fff" "positionalvalue" "required" "" "A required positional value"
-	__addarg "-g" "--ggg" "positionalvalue" "optional" "" "An optional positional value"
+	koi::addarg "-f" "--fff" "positionalvalue" "required" "" "A required positional value"
+	koi::addarg "-g" "--ggg" "positionalvalue" "optional" "" "An optional positional value"
 
 	# positional array
-	__addarg "-i" "--iii" "positionalarray" "required" "" "A required positional array"
-	__addarg "-j" "--jjj" "positionalarray" "optional" "" "An optional positional array"
+	koi::addarg "-i" "--iii" "positionalarray" "required" "" "A required positional array"
+	koi::addarg "-j" "--jjj" "positionalarray" "optional" "" "An optional positional array"
 
 	# paths to files
-	__addarg "-l" "--lll" "filepath" "required" "" "A required path to a file"
-	__addarg "-m" "--mmm" "filepath" "optional" "" "An optional path to a file"
-	__addarg "-n" "--nnn" "filepath" "optional" "/path/to/default.txt" "An optional path to file with a default value"
+	koi::addarg "-l" "--lll" "filepath" "required" "" "A required path to a file"
+	koi::addarg "-m" "--mmm" "filepath" "optional" "" "An optional path to a file"
+	koi::addarg "-n" "--nnn" "filepath" "optional" "/path/to/default.txt" "An optional path to file with a default value"
 
 	# paths to directories
-	__addarg "-o" "--ooo" "directorypath" "required" "" "A required path to a directory"
-	__addarg "-p" "--ppp" "directorypath" "optional" "" "An optional path to a directory"
-	__addarg "-q" "--qqq" "directorypath" "optional" "/path/to/defaultdir" "An optional path to directory with a default value"
+	koi::addarg "-o" "--ooo" "directorypath" "required" "" "A required path to a directory"
+	koi::addarg "-p" "--ppp" "directorypath" "optional" "" "An optional path to a directory"
+	koi::addarg "-q" "--qqq" "directorypath" "optional" "/path/to/defaultdir" "An optional path to directory with a default value"
 
 	# flags
-	__addarg "-r" "--rrr" "flag" "required" "" "A required flag, which will store 1 if present"
-	__addarg "-s" "--sss" "flag" "optional" "" "An optional flag, which will store 1 if present if included"
+	koi::addarg "-r" "--rrr" "flag" "required" "" "A required flag, which will store 1 if present"
+	koi::addarg "-s" "--sss" "flag" "optional" "" "An optional flag, which will store 1 if present if included"
 
 	# exit
-	__addarg "-t" "--ttt" "exit" "required" "" "A required exit, which will exit"
-	__addarg "-u" "--uuu" "exit" "optional" "" "An optional exit, which will exit if included"
+	koi::addarg "-t" "--ttt" "exit" "required" "" "A required exit, which will exit"
+	koi::addarg "-u" "--uuu" "exit" "optional" "" "An optional exit, which will exit if included"
 
-	# you need to call __parseargs for arguments to be parsed!
-	__parseargs "$@"
+	# you need to call koi::parseargs for arguments to be parsed!
+	koi::parseargs "$@"
 
 	# how to use the arguments you've defined
 	echo "storevalue, required: $aaa"
@@ -92,4 +92,4 @@ function myfunction {
 	echo "flag, optional: $sss"
 }
 
-__koirun "$@"
+koi::koirun "$@"

@@ -4,20 +4,20 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_verifyingfunction_invalid_not_defined {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text" "mycoolfunction"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text" "mycoolfunction"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_verifyingfunction_invalid_help {
-	__addarg "-h" "--help" "help" "optional" "" "help text" "__verifyingfunction"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text" "__verifyingfunction"
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_verifyingfunction_invalid_flag {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text" "__verifyingfunction"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text" "__verifyingfunction"
+	koi::parseargs "$@"
 	echo "$flag"
 }
 

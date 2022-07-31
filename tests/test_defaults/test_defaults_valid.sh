@@ -4,8 +4,8 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_default_valid_storevalue {
-	__addarg "-a" "--aaa" "storevalue" "optional" "foo" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "foo" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 

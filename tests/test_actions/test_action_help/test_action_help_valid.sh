@@ -4,10 +4,10 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_action_help_valid {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 }
 
 # ========= ASSERTIONS ========= #

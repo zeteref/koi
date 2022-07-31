@@ -4,21 +4,21 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_longoption_valid_singular {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_longoption_valid_multiple {
-	__addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--bbb" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa $bbb"
 }
 
 function test_longoption_valid_contains_number {
-	__addarg "-a" "--a0" "storevalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--a0" "storevalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$a0"
 }
 

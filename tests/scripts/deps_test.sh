@@ -5,16 +5,16 @@ koiname=deps_test.sh
 koidescription='Example of dependent arguments'
 
 function testfunc {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "-a" "--arg" "storevalue" "optional" "" "help text"
-	__addarg "-b" "--barg" "storevalue" "optional" "" "help text"
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "optional" "--flag" "--glad"
-	__adddep "--flag" "--glad" "dependson" "--arg"
-	__adddep "--flag" "dependson" "--barg"
-	__adddep "--glad" "dependson" "--barg"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "-a" "--arg" "storevalue" "optional" "" "help text"
+	koi::addarg "-b" "--barg" "storevalue" "optional" "" "help text"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "optional" "--flag" "--glad"
+	koi::adddep "--flag" "--glad" "dependson" "--arg"
+	koi::adddep "--flag" "dependson" "--barg"
+	koi::adddep "--glad" "dependson" "--barg"
+	koi::parseargs "$@"
 
 	echo "arg:  $arg"
 	echo "barg: $barg"
@@ -22,4 +22,4 @@ function testfunc {
 	echo "glad: $glad"
 }
 
-__koirun "$@"
+koi::koirun "$@"

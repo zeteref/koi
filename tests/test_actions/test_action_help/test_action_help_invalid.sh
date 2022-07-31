@@ -4,58 +4,58 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_action_help_invalid_shortoption {
-	__addarg "-g" "--help" "help" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-g" "--help" "help" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_action_help_invalid_longoption {
-	__addarg "-h" "--gelp" "help" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--gelp" "help" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$gelp"
 }
 
 function test_action_help_invalid_with_default {
-	__addarg "-h" "--help" "help" "optional" "help" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "help" "help text"
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_action_help_invalid_missing {
-	__addarg "-h" "--help" "help" "optional" ""
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" ""
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_action_help_invalid_blank {
-	__addarg "-h" "--help" "help" "optional" "" ""
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" ""
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_action_help_invalid_required {
-	__addarg "-h" "--help" "help" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_action_help_invalid_verifyingfunction {
-	__addarg "-h" "--help" "help" "optional" "" "help text" "__verifyhelp"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text" "__verifyhelp"
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_action_help_invalid_multiple_same_letter {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "-h" "--help" "help" "optional" "" "help text 2"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text 2"
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_action_help_invalid_multiple_different_letter {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "-g" "--gelp" "help" "optional" "" "help text 2"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "-g" "--gelp" "help" "optional" "" "help text 2"
+	koi::parseargs "$@"
 	echo "$help $gelp"
 }
 

@@ -4,32 +4,32 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_action_positionalarray_valid_required {
-	__addarg "" "aaa" "positionalarray" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_valid_optional {
-	__addarg "" "aaa" "positionalarray" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_valid_required_multiple_arguments {
-	__addarg "" "aaa" "positionalarray" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_valid_optional_multiple_arguments {
-	__addarg "" "aaa" "positionalarray" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_action_positionalarray_valid_with_dash {
-	__addarg "" "aaa" "positionalarray" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalarray" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 

@@ -4,120 +4,120 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_groups_invalid_too_few_arguments {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "flags" "XOR" "optional"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "flags" "XOR" "optional"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_invalid_name_blank {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "" "XOR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "" "XOR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_invalid_name_non_alphanumeric {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "--group" "XOR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "--group" "XOR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_invalid_name_starts_with_number {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "99group" "XOR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "99group" "XOR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_invalid_name_non_registered_argument {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "group" "XOR" "optional" "--flag" "--glad" "--vlad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "--flag" "--glad" "--vlad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_invalid_property {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "group" "and" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "group" "and" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_invalid_required {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "group" "AND" "notrequired" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "group" "AND" "notrequired" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad"
 }
 
 function test_groups_invalid_action_help {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "group" "XOR" "optional" "--help" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "--help" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$help $flag $glad"
 }
 
 function test_groups_invalid_action_positionalvalue {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "" "pos" "positionalvalue" "optional" "" "help text"
-	__addgroup "group" "XOR" "optional" "--flag" "--glad" "pos"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "" "pos" "positionalvalue" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "--flag" "--glad" "pos"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $pos"
 }
 
 function test_groups_invalid_action_positionalarray {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addarg "" "pos" "positionalarray" "optional" "" "help text"
-	__addgroup "group" "XOR" "optional" "--flag" "--glad" "pos"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addarg "" "pos" "positionalarray" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "--flag" "--glad" "pos"
+	koi::parseargs "$@"
 
 	echo "$flag $glad ${pos[@]}"
 }
 
 function test_groups_invalid_argument_required {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "required" "" "help text"
-	__addgroup "group" "XOR" "optional" "--flag" "--glad"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "required" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "--flag" "--glad"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $pos"
 }
 
 function test_groups_invalid_shortoptions_only {
-	__addarg "-f" "--flag" "flag" "optional" "" "help text"
-	__addarg "-g" "--glad" "flag" "optional" "" "help text"
-	__addgroup "group" "XOR" "optional" "-f" "-g"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "" "help text"
+	koi::addarg "-g" "--glad" "flag" "optional" "" "help text"
+	koi::addgroup "group" "XOR" "optional" "-f" "-g"
+	koi::parseargs "$@"
 
 	echo "$flag $glad $pos"
 }
 
 function test_groups_invalid_duplicate_arguments {
-	__addarg "-a" "--aaa" "flag" "optional" "" "help text"
-	__addgroup "wrong" "XOR" "optional" "--aaa" "--aaa"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "flag" "optional" "" "help text"
+	koi::addgroup "wrong" "XOR" "optional" "--aaa" "--aaa"
+	koi::parseargs "$@"
 
 	echo "$aaa"
 }

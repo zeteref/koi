@@ -4,28 +4,28 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_action_positionalvalue_valid_required_singular {
-	__addarg "" "aaa" "positionalvalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalvalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_action_positionalvalue_valid_required_multiple {
-	__addarg "" "aaa" "positionalvalue" "required" "" "help text"
-	__addarg "" "bbb" "positionalvalue" "required" "" "help text"
-	__addarg "" "ccc" "positionalvalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalvalue" "required" "" "help text"
+	koi::addarg "" "bbb" "positionalvalue" "required" "" "help text"
+	koi::addarg "" "ccc" "positionalvalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$bbb $ccc $aaa"
 }
 
 function test_action_positionalvalue_valid_optional {
-	__addarg "" "aaa" "positionalvalue" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalvalue" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_action_positionalvalue_valid_with_dash {
-	__addarg "" "aaa" "positionalvalue" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "" "aaa" "positionalvalue" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 

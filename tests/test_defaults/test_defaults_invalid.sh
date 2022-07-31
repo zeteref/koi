@@ -4,38 +4,38 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_default_invalid_required_with_default {
-	__addarg "-a" "--aaa" "storevalue" "required" "arg" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "required" "arg" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_default_invalid_help_with_default {
-	__addarg "-h" "--help" "help" "optional" "myhelp" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "myhelp" "help text"
+	koi::parseargs "$@"
 	echo "$help"
 }
 
 function test_default_invalid_flag_with_default {
-	__addarg "-f" "--flag" "flag" "optional" "1" "help text"
-	__parseargs "$@"
+	koi::addarg "-f" "--flag" "flag" "optional" "1" "help text"
+	koi::parseargs "$@"
 	echo "$flag"
 }
 
 function test_default_invalid_storearray_with_default {
-	__addarg "-a" "--aaa" "storearray" "optional" "arg" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storearray" "optional" "arg" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 
 function test_default_invalid_positionalvalue_with_default {
-	__addarg "-a" "--aaa" "positionalvalue" "optional" "arg" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "positionalvalue" "optional" "arg" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_default_invalid_positionalarray_with_default {
-	__addarg "-a" "--aaa" "positionalarray" "optional" "arg" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "positionalarray" "optional" "arg" "help text"
+	koi::parseargs "$@"
 	echo "${aaa[@]}"
 }
 

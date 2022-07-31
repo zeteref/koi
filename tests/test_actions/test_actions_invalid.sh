@@ -4,8 +4,8 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_action_invalid {
-	__addarg "-a" "--aaa" "mycoolaction" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "mycoolaction" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 

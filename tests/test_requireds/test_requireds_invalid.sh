@@ -4,14 +4,14 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_required_invalid_not_optional_or_required {
-	__addarg "-a" "--aaa" "storevalue" "Required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-a" "--aaa" "storevalue" "Required" "" "help text"
+	koi::parseargs "$@"
 	echo "$aaa"
 }
 
 function test_required_invalid_help {
-	__addarg "-h" "--help" "help" "required" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "required" "" "help text"
+	koi::parseargs "$@"
 	echo "$help"
 }
 

@@ -4,8 +4,8 @@ koirequirehelpactions=0
 
 # ========= TESTS ========= #
 function test_help_valid {
-	__addarg "-h" "--help" "help" "optional" "" "help text"
-	__parseargs "$@"
+	koi::addarg "-h" "--help" "help" "optional" "" "help text"
+	koi::parseargs "$@"
 	echo "help"
 }
 
