@@ -361,61 +361,6 @@ function koi::addarg {
     fi
 }
 
-function koi::arg {
-	: <<- COMMENT
-	Add an argument to parse for a function
-		$1 - short option (required, can be blank)
-		$2 - long option (required)
-		$3 - action to take with argument (required)
-		$4 - whether or not argument is required (required)
-		$5 - the default value for the argument (required, can be blank)
-		$6 - the help text to print when -h is specified (required)
-		$7 - the function used to verify the argument (optional)
-	COMMENT
-
-    declare -A params=([short]= [long]=arg [action]=positionalvalue [required]=required [default]= [help]= [verify]= [name]=)
-    while [[ "$1" == *"="* ]];
-    do
-        IFS="=" read -r key value <<< "$1"
-        params[$key]="$value"
-        shift
-    done
-    
-    # shellcheck disable=2086 
-    if [[ "${params[long]}" == "--"* ]]; then
-        : ${params[short]:="${params[long]:1:2}"}
-
-        if [[ "${params[action]}" == "positionalvalue" ]]; then
-            params[action]=storevalue
-        fi
-    fi
-
-    if [[ "${params[default]}" != "" ]]; then
-        params[required]=optional
-    fi
-
-    if [[ "${params[name]}" != "" ]]; then
-        params[long]="${params[name]}"
-    fi
-
-    if [[ "${params[help]}" == "" ]] && [[ "$1" != "" ]]; then
-        params[help]="$1"
-    fi
-
-    if [[ "${params[help]}" == "" ]]; then
-        params[help]="${params[action]}"
-    fi
-
-    koi::addarg \
-        "${params[short]}" \
-        "${params[long]}" \
-        "${params[action]}" \
-        "${params[required]}" \
-        "${params[default]}" \
-        "${params[help]}" \
-        "${params[verify]}"
-}
-
 function koi::addgroup {
 	: <<- COMMENT
 	Add a set of arguments to a group
@@ -668,7 +613,7 @@ function koi::parseargs {
             if [[ "$__action" == "help" ]] ; then __foundhelp=1 ; fi
         done
         if [[ $__foundhelp -eq 0 ]] ; then
-            koi::arg short=-h long=--help action="help" required="optional" help="Auto generated help"
+            koi::addarg -h --help help optional "" "Auto generated help"
         fi
     fi
 
@@ -1352,9 +1297,9 @@ function koi::run {
     fi
 
     # run logic
-    if declare -F -- "koi::main" >/dev/null ; then
+    if declare -F -- "__main__" >/dev/null ; then
         __koisubcommands=0
-        koi::main "$@"
+        __main__ "$@"
     elif declare -F -- "${1:-}" >/dev/null ; then
         "$@"
     else
@@ -1462,5 +1407,3 @@ function -h {
 function -hv {
     help -v "$@"
 }
-
-trap 'koi::run "$@"' EXIT
