@@ -936,6 +936,10 @@ function koi::parseargs {
             else
                 local __subcommandcmd __subcommandhelptext
                 __subcommandcmd="${FUNCNAME[1]} "
+                if ! grep -r -o "\b$__subcommandcmd\b" - <<< "$(koi::listfunctions)"; then
+                    __subcommandcmd="${FUNCNAME[2]} "
+                fi
+
                 __subcommandhelptext="\n${__koihelptexts[$__index]}"
             fi
             __finaloutput="$(koi::helptext clitext 0 "${__finaloutput}${koihelpmenuprefix}${koicolorsecondary}${koiname} ${__subcommandcmd}${__helphelptext}${__argumentgrouphelptext}${__argumentshelptext}${__positionalhelptext}${__reset}${__subcommandhelptext}\n")"
@@ -1303,6 +1307,10 @@ function koi::run {
     # check for ~/.koirc
     if [[ -f ~/.koirc ]] ; then
         koi::parsekoirc
+    fi
+
+    if [[ "$koiname" == "koi" ]]; then
+        koiname="${BASH_SOURCE[@]: -1}"
     fi
 
     # run logic
