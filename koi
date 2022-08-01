@@ -15,8 +15,8 @@ __teal='\033[96m'
 __white='\033[97m'
 
 # configurable options
-koiname=koi
-koidescription="Bashful argument parsing"
+koiname=
+koidescription=
 koihelpmenuprefix=
 koiwordwraplength=100
 koishowhints=1
@@ -191,7 +191,7 @@ function koi::listfunctions {
 }
 
 function koi::addarg {
-	: <<- COMMENT
+	: <<- 'COMMENT'
 	Add an argument to parse for a function
 		$1 - short option (required, can be blank)
 		$2 - long option (required)
@@ -622,7 +622,7 @@ function koi::parseargs {
             if [[ "$__action" == "help" ]] ; then __foundhelp=1 ; fi
         done
         if [[ $__foundhelp -eq 0 ]] ; then
-            koi::addarg -h --help help optional "" "Auto generated help"
+            koi::addarg -h --help help optional "" "Auto generated help" ""
         fi
     fi
 
@@ -686,11 +686,11 @@ function koi::parseargs {
         __option=
         __index=
         for __i in $(seq 0 "${#__koishortoptions[@]}") ; do
-            if [[ "${__koishortoptions[$__i]}" == "$__key" ]] ; then
+            if [[ "${__koishortoptions[$__i]-}" == "$__key" ]] ; then
                 __option="${__koishortoptions[$__i]}"
                 __index=$__i
                 break
-            elif [[ "${__koilongoptions[$__i]}" == "$__key" ]] ; then
+            elif [[ "${__koilongoptions[$__i]-}" == "$__key" ]] ; then
                 __option="${__koilongoptions[$__i]}"
                 __index=$__i
                 break
@@ -1072,12 +1072,12 @@ function koi::parseargs {
     for __index in "${!__koirequireds[@]}" ; do
         __varname="${__koilongoptions[$__index]#--}"
         if [[ "${__koirequireds[$__index]}" == "required" ]] ; then
-            if [[ "${!__varname}" == "" ]] ; then
+            if [[ "${!__varname-}" == "" ]] ; then
                 koi::errortext "$koiname: err: missing required argument ${__koilongoptions[$__index]}"
                 return 1
             fi
         else
-            if [[ "${!__varname}" == "" ]] ; then
+            if [[ "${!__varname-}" == "" ]] ; then
                 local __action
                 __action="${__koiactions[$__index]}"
                 if [[ "$__action" == "help" || "$__action" == "positionalvalue" || "$__action" == "positionalarray" ]] ; then
@@ -1309,9 +1309,8 @@ function koi::run {
         koi::parsekoirc
     fi
 
-    if [[ "$koiname" == "koi" ]]; then
-        koiname="${BASH_SOURCE[@]: -1}"
-    fi
+    koiname="${koiname:-"$(basename "${BASH_SOURCE[@]: -1}")"}"
+    koidescription="${koidescription:-${__doc__:-"Run $koiname"}}"
 
     # run logic
     if declare -F -- "__main__" >/dev/null ; then
