@@ -909,7 +909,7 @@ function koi::parseargs {
                 # build usage based on action
                 case "${__koiactions[$__i]}" in
                     help )
-                        __helphelptext="${__helphelptext}${__startrequiredtext}${__argumentname}${__endrequiredtext} "
+                        __helphelptext="${__helphelptext-}${__startrequiredtext}${__argumentname}${__endrequiredtext} "
                         ;;
                     flag )
                         __argumentshelptext="${__argumentshelptext}${__startrequiredtext}${__argumentname}${__endrequiredtext} "
@@ -942,7 +942,7 @@ function koi::parseargs {
 
                 __subcommandhelptext="\n${__koihelptexts[$__index]}"
             fi
-            __finaloutput="$(koi::helptext clitext 0 "${__finaloutput}${koihelpmenuprefix}${koicolorsecondary}${koiname} ${__subcommandcmd}${__helphelptext}${__argumentgrouphelptext}${__argumentshelptext}${__positionalhelptext}${__reset}${__subcommandhelptext}\n")"
+            __finaloutput="$(koi::helptext clitext 0 "${__finaloutput}${koihelpmenuprefix}${koicolorsecondary}${koiname} ${__subcommandcmd-}${__helphelptext}${__argumentgrouphelptext}${__argumentshelptext}${__positionalhelptext}${__reset}${__subcommandhelptext-}\n")"
             local __i
             for __i in "${!__koishortoptions[@]}" ; do
 
