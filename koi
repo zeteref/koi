@@ -170,12 +170,15 @@ function koi::commanddocs {
 }
 
 function koi::listfunctions {
-    # shellcheck disable=SC2207
-    functionlist=( $(declare -F | sed -e 's/declare -f //g' -e 's/^[_-].*$//g' -e 's/^koi::.*$//g') )
-    local __func
-    for __func in "${functionlist[@]}" ; do
-        echo "$__func"
-    done
+    (
+        shopt -s extdebug  # we want to check where function is defined
+        declare -F $(declare -F | sed -e 's/declare -f //g' -e 's/^[_-].*$//g' -e 's/^koi::.*$//g') | while read -r fname _ src
+        do
+            if [[ "$src" == "${BASH_SOURCE[@]: -1}" ]] || [[ "$src" == "${BASH_SOURCE[0]}" ]]; then
+                printf '%s\n' "$fname"
+            fi
+        done
+    )
 }
 
 function koi::addarg {
