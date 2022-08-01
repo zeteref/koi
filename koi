@@ -202,18 +202,18 @@ function koi::addarg {
 		$7 - the function used to verify the argument (optional)
 	COMMENT
 
-     [[ $# -ne 6 && $# -ne 7 ]] && koi::die "koi::addarg err: incorrect usage, either 6 or 7 arguments are required" 1
+     [[ $# -ne 6 && $# -ne 7 ]] && koi::die "koi::addarg err: incorrect usage, either 6 or 7 arguments are required"
 
     # short option
     if [[ "$1" != "" ]] ; then
-         [[ "$1" != -* || "$1" == --* ]] && koi::die "koi::addarg err: short option must start with a single dash" 1
-         [[ "${#1}" -gt 2 ]] && koi::die "koi::addarg err: short options must be a single dash followed by a single letter" 1
-         [[ "$1" == *" "* ]] && koi::die "koi::addarg err: short option cannot contain a space" 1
-         ! [[ "$1" =~ ^-[a-zA-Z] ]] && koi::die "koi::addarg err: short option must be a letter" 1
+         [[ "$1" != -* || "$1" == --* ]] && koi::die "koi::addarg err: short option must start with a single dash"
+         [[ "${#1}" -gt 2 ]] && koi::die "koi::addarg err: short options must be a single dash followed by a single letter"
+         [[ "$1" == *" "* ]] && koi::die "koi::addarg err: short option cannot contain a space"
+         ! [[ "$1" =~ ^-[a-zA-Z] ]] && koi::die "koi::addarg err: short option must be a letter"
     fi
 
     # long option
-     [[ "$2" == "" ]] && koi::die "koi::addarg err: missing long option for argument" 1
+     [[ "$2" == "" ]] && koi::die "koi::addarg err: missing long option for argument"
     if [[ "$3" == "positionalvalue" || "$3" == "positionalarray" ]] ; then
         if ! [[ "$2" =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]] ; then
             koi::errortext -c "$koiname: koi::addarg err: positional arguments must be alphanumeric and cannot start with a number"
@@ -229,7 +229,7 @@ function koi::addarg {
             return 1
         fi
     fi
-     [[ "$2" == *" "* ]] && koi::die "koi::addarg err: long option cannot contain a space" 1
+     [[ "$2" == *" "* ]] && koi::die "koi::addarg err: long option cannot contain a space"
     local __illegalnames __illegalname
     __illegalnames=( \
         BASH BASH_ENV BASH_SUBSHELL BASHPID BASH_VERSINFO BASH_VERSION CDPATH \
@@ -251,46 +251,46 @@ function koi::addarg {
     # action
     local __availableactions
     __availableactions=( help storevalue storearray positionalvalue positionalarray flag )
-     [[ "$3" == "" ]] && koi::die "koi::addarg err: missing action for argument" 1
+     [[ "$3" == "" ]] && koi::die "koi::addarg err: missing action for argument"
     local __found __action
     __found=0
     for __action in "${__availableactions[@]}" ; do if [[ "$__action" == "$3" ]] ; then __found=1 ; break ; fi ; done
-     [[ $__found -eq 0 ]] && koi::die "koi::addarg err: action must be one of: $(__tmp=$(koi::join ',' "${__availableactions[@]}") ; echo "${__tmp//,/, }")" 1
+     [[ $__found -eq 0 ]] && koi::die "koi::addarg err: action must be one of: $(__tmp=$(koi::join ',' "${__availableactions[@]}") ; echo "${__tmp//,/, }")"
     if [[ "$3" == "positionalvalue" || "$3" == "positionalarray" ]] ; then
-         [[ "$1" != "" ]] && koi::die "koi::addarg err: positional arguments cannot have a short name" 1
-         [[ "$2" == -* ]] && koi::die "koi::addarg err: positional arguments long name cannot begin with a dash" 1
+         [[ "$1" != "" ]] && koi::die "koi::addarg err: positional arguments cannot have a short name"
+         [[ "$2" == -* ]] && koi::die "koi::addarg err: positional arguments long name cannot begin with a dash"
     fi
     if [[ "$3" == "help" ]] ; then
-         [[ "$1" != "-h" ]] && koi::die "koi::addarg err: help actions must use '-h' for their short names" 1
-         [[ "$2" != "--help" ]] && koi::die "koi::addarg err: help actions must use '--help' for their long names" 1
+         [[ "$1" != "-h" ]] && koi::die "koi::addarg err: help actions must use '-h' for their short names"
+         [[ "$2" != "--help" ]] && koi::die "koi::addarg err: help actions must use '--help' for their long names"
     fi
 
     # required
-     [[ "$4" == "" ]] && koi::die "koi::addarg err: missing required for argument" 1
-     [[ "$4" != "required" && "$4" != "optional" ]] && koi::die "koi::addarg err: required must be one of: required, optional" 1
-     [[ "$3" == "help" && "$4" == "required" ]] && koi::die "koi::addarg err: help option cannot be required" 1
+     [[ "$4" == "" ]] && koi::die "koi::addarg err: missing required for argument"
+     [[ "$4" != "required" && "$4" != "optional" ]] && koi::die "koi::addarg err: required must be one of: required, optional"
+     [[ "$3" == "help" && "$4" == "required" ]] && koi::die "koi::addarg err: help option cannot be required"
 
     # default
     if [[ "$5" != "" ]] ; then
-         [[ "$4" == "required" ]] && koi::die "koi::addarg err: required arguments cannot have default values" 1
-         [[ "$3" == "help" ]] && koi::die "koi::addarg err: help action cannot have a default value" 1
-         [[ "$3" == "flag" ]] && koi::die "koi::addarg err: flags cannot have default values" 1
-         [[ "$3" == "storearray" ]] && koi::die "koi::addarg err: arrays cannot have default values" 1
-         [[ "$3" == "positionalvalue" ]] && koi::die "koi::addarg err: positional values cannot have default values" 1
-         [[ "$3" == "positionalarray" ]] && koi::die "koi::addarg err: positional arrays cannot have default values" 1
+         [[ "$4" == "required" ]] && koi::die "koi::addarg err: required arguments cannot have default values"
+         [[ "$3" == "help" ]] && koi::die "koi::addarg err: help action cannot have a default value"
+         [[ "$3" == "flag" ]] && koi::die "koi::addarg err: flags cannot have default values"
+         [[ "$3" == "storearray" ]] && koi::die "koi::addarg err: arrays cannot have default values"
+         [[ "$3" == "positionalvalue" ]] && koi::die "koi::addarg err: positional values cannot have default values"
+         [[ "$3" == "positionalarray" ]] && koi::die "koi::addarg err: positional arrays cannot have default values"
     fi
 
     # help
-     [[ "$6" == "" ]] && koi::die "koi::addarg err: missing help text for argument" 1
+     [[ "$6" == "" ]] && koi::die "koi::addarg err: missing help text for argument"
 
     # verifyingfunction
     if [[ "$7" != "" ]] ; then
         local __verifyingcmd __verifyingargs
         __verifyingcmd="${7%% *}"
         __verifyingargs="${7##$__verifyingcmd}"
-         ! declare -F -- "$__verifyingcmd" >/dev/null && koi::die "koi::addarg err: specified verifying function '$7' is not defined" 1
-         [[ "$3" == "help" ]] && koi::die "$koiname koi::addarg err: help options cannot have a verifyingfunction" 1
-         [[ "$3" == "flag" ]] && koi::die "$koiname koi::addarg err: flag options cannot have a verifyingfunction" 1
+         ! declare -F -- "$__verifyingcmd" >/dev/null && koi::die "koi::addarg err: specified verifying function '$7' is not defined"
+         [[ "$3" == "help" ]] && koi::die "$koiname koi::addarg err: help options cannot have a verifyingfunction"
+         [[ "$3" == "flag" ]] && koi::die "$koiname koi::addarg err: flag options cannot have a verifyingfunction"
     fi
 
     # update argument lists
