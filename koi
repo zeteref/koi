@@ -370,7 +370,7 @@ function koi::arg {
 		$7 - the function used to verify the argument (optional)
 	COMMENT
 
-    declare -A params=([short]= [long]=arg [action]=positionalvalue [required]=required [default]= [help]= [verify]=)
+    declare -A params=([short]= [long]=arg [action]=positionalvalue [required]=required [default]= [help]= [verify]= [name]=)
     while [[ "$1" == *"="* ]];
     do
         IFS="=" read -r key value <<< "$1"
@@ -379,12 +379,28 @@ function koi::arg {
     done
     
     # shellcheck disable=2086 
-    if [[ "${params[long]}" == --"*" ]]; then
+    if [[ "${params[long]}" == "--"* ]]; then
         : ${params[short]:="${params[long]:1:2}"}
+
+        if [[ "${params[action]}" == "positionalvalue" ]]; then
+            params[action]=storevalue
+        fi
     fi
 
     if [[ "${params[default]}" != "" ]]; then
         params[required]=optional
+    fi
+
+    if [[ "${params[name]}" != "" ]]; then
+        params[long]="${params[name]}"
+    fi
+
+    if [[ "${params[help]}" == "" ]] && [[ "$1" != "" ]]; then
+        params[help]="$1"
+    fi
+
+    if [[ "${params[help]}" == "" ]]; then
+        params[help]="${params[action]}"
     fi
 
     koi::addarg \
