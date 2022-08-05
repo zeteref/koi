@@ -43,7 +43,7 @@ __koiparsedargs=()
 __koidependencies=()
 
 # ============ CLI FUNCTIONS ============ #
-function list {
+function koi::list {
     koi::addarg "-h" "--help" "help" "optional" "" "List all available commands"
     koi::addarg "-d" "--docs" "flag" "optional" "" "If included, print command documentation"
     koi::parseargs "$@"
@@ -56,7 +56,7 @@ function list {
     fi
 }
 
-function help {
+function koi::help {
     koi::addarg "-h" "--help" "help" "optional" "" "Show this menu and exit"
     koi::addarg "-v" "--verbose" "flag" "optional" "" "Print verbose command documentation"
     koi::parseargs "$@"
@@ -1414,13 +1414,13 @@ function koi::errortext {
 }
 
 function --help {
-    help "$@"
+    koi::help "$@"
 }
 
 function -h {
-    help "$@"
+    koi::help "$@"
 }
 
 function -hv {
-    help -v "$@"
+    koi::help -v "$@"
 }
